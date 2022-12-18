@@ -1,0 +1,36 @@
+body {
+  background: linear-gradient($lightgrey, $spotiGreen);
+}
+
+#header {
+  // align-content: center;
+  h1 {
+    align-items: center;
+  }
+  button {
+  }
+}
+
+#main {
+  display: grid;
+  grid-template-columns: 2fr 2fr;
+
+  div {
+    margin: 5px;
+  }
+}
+
+h1 {
+  font-size: 100px;
+}
+h2 {
+  font-size: 40px;
+}
+
+img .play {
+  height: 20px;
+}
+
+img {
+  background-color: transparent;
+}
