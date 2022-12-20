@@ -40,7 +40,7 @@ const PlaylistTracks = (props) => {
               <td>
                 <input
                   id={`${id}`}
-                  className='generateRecs'
+                  className='getRecommendations'
                   type='submit'
                   value='Seed'
                   onClick={handleClick}
