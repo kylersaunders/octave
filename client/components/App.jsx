@@ -11,6 +11,9 @@ import Navbar from './Navbar.jsx';
 import Search from './Search.jsx';
 import Login from './Login.jsx';
 
+//import styles
+import './app.css';
+
 //import helper functions
 import { parseResults, playIcon } from '../utils/helperFunctions';
 import { buildRecQueryString, trackAttributes } from '../utils/endpointQueries';

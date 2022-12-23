@@ -47,7 +47,7 @@ module.exports = {
       });
   },
   getMyPlaylists: async (playlistOffset) => {
-    const limit = document.getElementById('playlistLimit').value || 5;
+    const limit = document.getElementById('playlistLimit').value || 10;
     let lists = await fetch(
       `/api/getUsersPlaylists?offset=${playlistOffset}&limit=${limit}`
     )
