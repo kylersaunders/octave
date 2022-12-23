@@ -1,66 +1,89 @@
-var express = require('express'); // Express web server framework
-var app = express();
-var request = require('request'); // "Request" library
-var cors = require('cors');
-var querystring = require('querystring');
-var cookieParser = require('cookie-parser');
+const express = require('express'); // Express web server framework
+const app = express();
+const request = require('request'); // "Request" library
+const cors = require('cors');
+const querystring = require('querystring');
+const cookieParser = require('cookie-parser');
 const Buffer = require('buffer').Buffer;
 const path = require('path');
+const axios = require('axios');
+const helper = require('./serverHelpers');
 
 app.use(cors()).use(cookieParser()).use(express.json());
 
 const db = require('./models/postgresQLmodel');
 const cs = require('./clientSecret');
 
-var generateRandomString = function (length) {
-  var text = '';
-  var possible =
+const generateRandomString = function (length) {
+  let text = '';
+  const possible =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-  for (var i = 0; i < length; i++) {
+  for (let i = 0; i < length; i++) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
   return text;
 };
 
-var client_id = cs.cid; // Your client id
-var client_secret = cs.cs; // Your secret
-var redirect_uri = 'http://localhost:8080/callback'; // Your redirect uri
-var stateKey = 'spotify_auth_state';
+const client_id = cs.cid; // Your client id
+const client_secret = cs.cs; // Your secret
+const stateKey = 'spotify_auth_state';
+let redirect_uri;
 
-// if (process.env.NODE_ENV === 'production') {redirect_uri = 'http://localhost:8080/callback'}
+if (process.env.NODE_ENV === 'production') {
+  redirect_uri = 'http://localhost:3000/login';
+} else {
+  redirect_uri = 'http://localhost:8080/login';
+}
+
+// app.get('/login', function (req, res) {
+//   var state = generateRandomString(16);
+//   res.cookie(stateKey, state);
+
+//   var scope =
+//     'user-read-private user-modify-private user-read-email user-modify-playback-state playlist-read-collaborative playlist-modify-public playlist-modify-private';
+
+//   //////===============================
+//   db.query('truncate table tokens', (err, data) => {
+//     console.log('tokens cleaned');
+//   });
+//   //////===============================
+//   res.redirect(
+//     'https://accounts.spotify.com/authorize?' +
+//       querystring.stringify({
+//         response_type: 'code',
+//         client_id: client_id,
+//         scope: scope,
+//         redirect_uri: redirect_uri,
+//         state: state,
+//       })
+//   );
+// });
 
 app.get('/login', function (req, res) {
-  var state = generateRandomString(16);
-  res.cookie(stateKey, state);
-
-  var scope =
-    'user-read-private user-modify-private user-read-email user-modify-playback-state playlist-read-collaborative playlist-modify-public playlist-modify-private';
-
-  //////===============================
-  db.query('truncate table tokens', (err, data) => {
-    console.log('tokens cleaned');
-  });
-  //////===============================
-  res.redirect(
-    'https://accounts.spotify.com/authorize?' +
-      querystring.stringify({
-        response_type: 'code',
-        client_id: client_id,
-        scope: scope,
-        redirect_uri: redirect_uri,
-        state: state,
-      })
-  );
-});
-
-app.get('/callback', function (req, res) {
   console.log('=============callback started');
   var code = req.query.code || null;
   var state = req.query.state || null;
   var storedState = req.cookies ? req.cookies[stateKey] : null;
 
-  if (state === null || state !== storedState) {
+  if (state === null) {
+    console.log('yikes');
+    var state = generateRandomString(16);
+    res.cookie(stateKey, state);
+    var scope =
+      'user-read-private user-modify-private user-read-email user-modify-playback-state playlist-read-collaborative playlist-modify-public playlist-modify-private';
+    helper.db('truncate table tokens');
+    res.redirect(
+      'https://accounts.spotify.com/authorize?' +
+        querystring.stringify({
+          response_type: 'code',
+          client_id: client_id,
+          scope: scope,
+          redirect_uri: redirect_uri,
+          state: state,
+        })
+    );
+  } else if (state !== storedState) {
     res.redirect(
       '/#' +
         querystring.stringify({
@@ -80,7 +103,6 @@ app.get('/callback', function (req, res) {
       headers: {
         Authorization:
           'Basic ' +
-          // new Buffer(client_id + ':' + client_secret).toString('base64'),
           Buffer.from(client_id + ':' + client_secret).toString('base64'),
       },
       json: true,
@@ -88,13 +110,13 @@ app.get('/callback', function (req, res) {
 
     request.post(authOptions, function (error, response, body) {
       if (!error && response.statusCode === 200) {
-        console.log('========body', body);
+        // console.log('========body', body);
         const { access_token, refresh_token } = body;
-        console.log(
-          '==========new tokens========',
-          access_token,
-          refresh_token
-        );
+        // console.log(
+        //   '==========new tokens========',
+        //   access_token,
+        //   refresh_token
+        // );
         const query = {
           values: [access_token, refresh_token],
           text: 'INSERT INTO tokens (access_token, refresh_token) VALUES ($1,$2) RETURNING *;',
@@ -118,7 +140,7 @@ app.get('/callback', function (req, res) {
 });
 
 const apiRouter = require('./routes/api');
-// const apiRouter = express.Router();
+const { ModuleFilenameHelpers } = require('webpack');
 app.use('/api', apiRouter);
 
 app.use((err, req, res, next) => {
@@ -129,12 +151,12 @@ app.use((err, req, res, next) => {
 //extras
 app.get('/refresh_token', function async(req, res) {
   // requesting access token from refresh token
-  // var refresh_token = req.query.refresh_token;
+  // const refresh_token = req.query.refresh_token;
 
   db.query('select refresh_token from tokens', (err, data) => {
-    var refresh_token = data.rows[0].refresh_token;
+    const refresh_token = data.rows[0].refresh_token;
 
-    var authOptions = {
+    const authOptions = {
       url: 'https://accounts.spotify.com/api/token',
       headers: {
         Authorization:
@@ -151,7 +173,7 @@ app.get('/refresh_token', function async(req, res) {
 
     request.post(authOptions, function (error, response, body) {
       if (!error && response.statusCode === 200) {
-        var access_token = body.access_token;
+        const access_token = body.access_token;
 
         //////===============================
         db.query('truncate table tokens', (err, data) => {
@@ -164,7 +186,7 @@ app.get('/refresh_token', function async(req, res) {
         };
 
         db.query(query, (err, data) => {
-          console.log('tokens stored============', data.rows[0]);
+          // console.log('tokens stored============', data.rows[0]);
         });
         res.redirect('/');
 

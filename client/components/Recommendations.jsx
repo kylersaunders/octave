@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import RecommendationsParameters from './RecommendationsParameters';
+import RecommendationsParameters from './RecommendationsParameters.jsx';
 
 const Recommendations = (props) => {
   const { handleClick, results, playIcon } = props;

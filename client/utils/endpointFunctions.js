@@ -1,4 +1,12 @@
 module.exports = {
+  logIn: async () => {
+    return await fetch('/login')
+      .then((auth) => auth.json())
+      .then((auth) => {
+        console.log('auth', auth);
+        return auth;
+      });
+  },
   getSearch: async (e) => {
     let params = new URLSearchParams('q=' + e.target.form[0].value).toString();
 
@@ -39,7 +47,7 @@ module.exports = {
       });
   },
   getMyPlaylists: async (playlistOffset) => {
-    const limit = document.getElementById('playlistLimit').value;
+    const limit = document.getElementById('playlistLimit').value || 5;
     let lists = await fetch(
       `/api/getUsersPlaylists?offset=${playlistOffset}&limit=${limit}`
     )
@@ -57,7 +65,7 @@ module.exports = {
       return { id, name, public_vis, image_url, tracks };
     });
   },
-  getPlaylistTracks: async () => {
+  getPlaylistTracks: async (e) => {
     const playlist_id = e.target.id;
     let listTracks = await fetch(`/api/getTracks?id=${playlist_id}`)
       .then((data) => data.json())

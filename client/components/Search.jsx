@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import PlaylistTracks from './PlaylistTracks';
+import PlaylistTracks from './PlaylistTracks.jsx';
 
 const Search = (props) => {
-  const { handleClick, searchResults, playIcon } = props;
+  const { handleClick, results, playIcon } = props;
   return (
     <div>
       <h2>Search Spotify</h2>
@@ -22,7 +22,7 @@ const Search = (props) => {
       </form>
       <div id='searchResults'>
         <PlaylistTracks
-          results={searchResults}
+          results={results}
           handleClick={handleClick}
           playIcon={playIcon}
         />
