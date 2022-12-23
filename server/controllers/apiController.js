@@ -16,7 +16,7 @@ apiController.getFromSpotify = async (req, res, next) => {
     });
     // console.log('=======server', res.locals.response);
     res.locals.body = await res.locals.response.json();
-    // console.log('=======server', res.locals.response);
+    // console.log('SERVER====getFromSpotify BODY==', res.locals.body);
     next();
   } catch (err) {
     next(err);
@@ -126,19 +126,19 @@ apiController.getTrack = (req, res, next) => {
 apiController.getSearch = (req, res, next) => {
   // res.locals.q = 'sabotage';
   searchTerms = new URLSearchParams(req.query.q).toString();
-  console.log('api QUERY==========', searchTerms);
+  // console.log('api QUERY==========', searchTerms);
   const query = {
     q: searchTerms,
     type: 'track',
     include_external: 'audio',
-    limit: '15', //20 is default
+    limit: '5', //20 is default
   };
   let queryString = '';
   Object.keys(query).forEach((x) => {
     queryString += x + '=' + query[x] + '&';
   });
   queryString = queryString.slice(0, queryString.length - 1);
-  // console.log('querystring', queryString);
+  console.log('SERVER=====getSearch', queryString);
   res.locals.url = `https://api.spotify.com/v1/search?=${queryString}`;
   // console.log('url: ', res.locals.url);
   next();
