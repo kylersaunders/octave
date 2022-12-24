@@ -14,7 +14,7 @@ const Search = (props) => {
         ></input>
         <button
           id='getSearchSubmit'
-          className='getSearchSubmit'
+          name='getSearchSubmit'
           onClick={handleClick}
         >
           I'm feeling lucky

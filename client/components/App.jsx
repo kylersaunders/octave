@@ -11,6 +11,9 @@ import Navbar from './Navbar.jsx';
 import Search from './Search.jsx';
 import Login from './Login.jsx';
 
+//import styles
+// import './app.css';
+
 //import helper functions
 import { parseResults, playIcon } from '../utils/helperFunctions';
 import { buildRecQueryString, trackAttributes } from '../utils/endpointQueries';
@@ -34,21 +37,49 @@ const App = () => {
 
   //assisting vars
   const [playlistOffset, incrementPlaylistOffset] = useState(0);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState('');
 
   let lastClicked;
   let tracksToAdd = {};
 
+  // window.onSpotifyIframeApiReady = (IFrameAPI) => {
+  //   console.log('SPOTIFY', window.onSpotifyIframeApiReady, IFrameAPI);
+  //   let base = document.getElementById('root');
+  //   let element = document.createElement('div');
+  //   element.setAttribute('id', 'embed-iframe');
+  //   let button = document.createElement('button');
+  //   button.setAttribute('id', 'testBtn');
+  //   button.setAttribute(
+  //     'data-spotify-id',
+  //     'spotify:episode:6I3ZzCxRhRkNqnQNo8AZPV'
+  //   );
+  //   element.appendChild(button);
+  //   base.appendChild(element);
+  //   let options = {
+  //     width: '60%',
+  //     height: '200',
+  //     // uri: 'spotify:episode:43cbJh4ccRD7lzM2730YK3',
+  //     uri: 'spotify:episode:1oj4KLsbYhvfHFnhdb3twP',
+  //   };
+  //   let callback = (EmbedController) => {
+  //     let x = document.getElementById('testBtn');
+  //     x.addEventListener('click', () => {
+  //       EmbedController.loadUri(x.dataset.spotifyId);
+  //     });
+  //   };
+  //   IFrameAPI.createController(element, options, callback);
+  // };
+
   //switchboard based on click
   const handleClick = async (e) => {
     e.preventDefault();
-    switch (e.target.className) {
+    switch (e.target.name) {
       case 'login':
-        // fetch('/cb');
-        let login = await logIn();
-        setLoggedIn(() => {
-          return login;
-        });
+        fetch('/login');
+      // let login = await logIn();
+      // setLoggedIn(() => {
+      //   return login;
+      // });
       case 'getSearchSubmit':
         let sResults = await getSearch(e);
         // console.log('sResults', sResults);
@@ -89,7 +120,7 @@ const App = () => {
         addToPlaylist(tracksToAdd);
         return;
       default:
-        console.log('Nothing scheduled for this click', e.target.className);
+        console.log('Nothing scheduled for this click', e.target.name);
         return;
     }
   };
@@ -98,7 +129,7 @@ const App = () => {
 
   return (
     <div>
-      <Login handleClick={handleClick} />
+      {/* <Login handleClick={handleClick} /> */}
       <Navbar />
       <Search
         results={searchResults}

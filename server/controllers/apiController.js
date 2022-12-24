@@ -172,6 +172,10 @@ apiController.addItemsToPlaylist = (req, res, next) => {
   next();
 };
 
+apiController.getAudioFeatures = (req, res, next) => {
+  next();
+};
+
 //==================DELETE==============================================================================
 
 // apiController.deleteFromSpotify = (req, res, next) => {
