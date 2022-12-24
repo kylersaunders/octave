@@ -50,7 +50,7 @@ const PlaylistTracks = (props) => {
               <td>
                 <input
                   id={`${id}`}
-                  className='getRecommendations'
+                  name='getRecommendations'
                   type='submit'
                   value='Seed'
                   onClick={handleClick}

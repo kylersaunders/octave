@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import * as styles from ('./Playlists.module.scss')
 
 const Playlists = (props) => {
   const { handleClick, results } = props;
@@ -8,7 +7,7 @@ const Playlists = (props) => {
       <h2>Your Playlists</h2>
       <button
         id='getUsersPlaylists'
-        className='getMyPlaylists'
+        name='getMyPlaylists'
         onClick={handleClick}
       >
         Get my playlists
@@ -26,7 +25,7 @@ const Playlists = (props) => {
           type='text'
           placeholder='new playlist name here'
         ></input>
-        <button className='createPlaylist' onClick={handleClick}>
+        <button name='createPlaylist' onClick={handleClick}>
           Create new playlist
         </button>
       </form>
@@ -47,7 +46,7 @@ const Playlists = (props) => {
             return (
               <tr>
                 <td>
-                  <img class='playlistImg' src={image_url}></img>
+                  <img className='playlistImg' src={image_url}></img>
                 </td>
                 <td>{name}</td>
                 <td>{tracks}</td>
@@ -55,7 +54,6 @@ const Playlists = (props) => {
                 <td>
                   <input
                     id={`${id}`}
-                    className='selectPlaylist'
                     name='selectPlaylist'
                     type='radio'
                     onClick={handleClick}
@@ -64,7 +62,7 @@ const Playlists = (props) => {
                 <td>
                   <input
                     id={`${id}`}
-                    className='getPlaylistTracks'
+                    name='getPlaylistTracks'
                     type='submit'
                     value='Tracks'
                     onClick={handleClick}

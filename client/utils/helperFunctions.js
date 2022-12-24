@@ -4,20 +4,23 @@ module.exports = {
     if (data) {
       data.forEach((x) => {
         const { preview_url, id, name, popularity, artists, duration_ms } = x;
-        let artists_names = [];
-        artists.forEach((y) => {
-          const { name } = y;
-          artists_names.push(name);
+        const l = artists.length - 1;
+        let artists_names = artists[0].name;
+        if (l === 0) {
+          //nothing
+        } else if (l === 1) {
+          artists_names += ' & 1 other';
+        } else {
+          artists_names += ' & ' + l + ' others';
+        }
+        output.push({
+          preview_url,
+          id,
+          name,
+          popularity,
+          artists_names,
+          duration_ms,
         });
-        (artists_names = artists_names.join(', ')),
-          output.push({
-            preview_url,
-            id,
-            name,
-            popularity,
-            artists_names,
-            duration_ms,
-          });
       });
     }
     // console.log('output', output);

@@ -1,6 +1,6 @@
 module.exports = {
   logIn: async () => {
-    return await fetch('/login')
+    return await fetch('/login', { mode: 'no-cors' })
       .then((auth) => auth.json())
       .then((auth) => {
         console.log('auth', auth);

@@ -9,7 +9,7 @@ const RecommendationsParameters = (props) => {
       <form>
         <input
           id='addToPlaylist'
-          className='addToPlaylist'
+          name='addToPlaylist'
           type='submit'
           value='Add checked songs to checked playlist'
           onClick={handleClick}
@@ -29,7 +29,7 @@ const RecommendationsParameters = (props) => {
           min={0}
           max={50}
         ></input>
-        <button className='getRecommendations' onClick={handleClick}>
+        <button name='getRecommendations' onClick={handleClick}>
           Create new playlist
         </button>
       </form>

@@ -39,7 +39,7 @@ module.exports = {
     devMiddleware: { publicPath: '/' },
     port: 8080,
     proxy: {
-      '/': 'http://localhost:3000/',
+      '/': 'http://localhost:3434/',
     },
   },
   plugins: [

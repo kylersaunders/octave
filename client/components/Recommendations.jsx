@@ -32,7 +32,7 @@ const Recommendations = (props) => {
               <tr>
                 <td>
                   <a target='_blank' href={preview_url}>
-                    <img height='20px' class='play' src={playIcon}></img>
+                    <img height='20px' className='play' src={playIcon}></img>
                   </a>
                 </td>
                 <td>{name}</td>
@@ -43,7 +43,7 @@ const Recommendations = (props) => {
                 <td>
                   <input
                     id={`${id}`}
-                    className='addRecs'
+                    name='addRecs'
                     type='checkbox'
                     onClick={handleClick}
                   ></input>
