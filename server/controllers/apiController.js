@@ -6,6 +6,19 @@ var request = require('request'); //deprecated - try to replace
 const { query } = require('express');
 const apiController = {};
 
+//==================AUTH=========================================================================
+apiController.checkAuth = async (req, res, next) => {
+  if (req.cookies.auth) {
+    console.log('cookie');
+    next();
+  } else {
+    console.log('no cookie');
+    res
+      .status(200)
+      .sendFile(path.resolve(__dirname, '../../client/login.html'));
+  }
+};
+
 //==================SUMMARY=========================================================================
 
 apiController.getFromSpotify = async (req, res, next) => {

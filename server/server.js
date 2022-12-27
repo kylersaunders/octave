@@ -10,6 +10,7 @@ const axios = require('axios');
 
 app.use(cors()).use(cookieParser()).use(express.json());
 
+const apiController = require('./controllers/apiController');
 const db = require('./models/postgresQLmodel');
 const cs = require('./clientSecret');
 const apiRouter = require('./routes/api');
@@ -86,7 +87,7 @@ app.get('/login', async function (req, res) {
       };
       db.query(query);
       console.log('**********auth success*********');
-      res.cookie('auth', access.data.access_token, { maxAge: 3600 });
+      res.cookie('auth', access.data.access_token, { maxAge: 3600000 });
       // res.status(200).json(access.data.access_token);
       res.redirect('/');
     } else {
@@ -141,7 +142,8 @@ if (process.env.NODE_ENV === 'production') {
   // statically serve everything in the build folder on the route '/build'
   app.use('/build', express.static(path.join(__dirname, '../build')));
   // serve index.html on the route '/'
-  app.get('/', (req, res) => {
+  app.get('/', apiController.checkAuth, (req, res) => {
+    console.log('HOME REQUESTED');
     return res
       .status(200)
       .sendFile(path.resolve(__dirname, '../client/index.html'));
