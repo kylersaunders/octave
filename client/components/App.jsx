@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Routes, navigate } from 'react-router-dom';
+// import { Route, Routes, navigate } from 'react-router-dom';
 import { traceDeprecation } from 'process';
 import { parse } from 'querystring';
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Route,
+  Router,
+  Switch,
+  Link,
+} from 'react-router-dom';
 
 //import components
 import Recommendations from './Recommendations.jsx';
@@ -10,6 +18,15 @@ import Playlists from './Playlists.jsx';
 import Navbar from './Navbar.jsx';
 import Search from './Search.jsx';
 import Login from './Login.jsx';
+import Title from './Title.jsx';
+import Div1 from './Div1.jsx';
+import Div2 from './Div2.jsx';
+import Div3 from './Div3.jsx';
+
+//OPTION components
+import MyAccount from './MyAccount.jsx';
+import BuildWorkout from './BuildWorkout.jsx';
+import BuildClass from './BuildClass.jsx';
 
 //import styles
 // import './app.css';
@@ -38,6 +55,7 @@ const App = () => {
   //assisting vars
   const [playlistOffset, incrementPlaylistOffset] = useState(0);
   const [loggedIn, setLoggedIn] = useState('');
+  const [showNav, setShowNav] = useState(false);
 
   let lastClicked;
   let tracksToAdd = {};
@@ -125,12 +143,69 @@ const App = () => {
     }
   };
 
-  // if (!loggedIn) return <Login handleClick={handleClick} />;
+  const divOneRoutes = [
+    {
+      key: 'myAccount',
+      path: '/',
+      component: MyAccount,
+      exact: true,
+    },
+    {
+      key: 'buildWorkout',
+      path: '/buildWorkout',
+      component: BuildWorkout,
+      exact: true,
+    },
+    // {
+    //   key: 'savedWorkouts',
+    //   path: '/savedWorkouts',
+    //   component: SavedWorkouts,
+    //   exact: true,
+    // },
+    // {
+    //   key: 'searchSpotify',
+    //   path: '/searchSpotify',
+    //   component: SearchSpotify,
+    //   exact: true,
+    // },
+    // {
+    //   key: 'getRecommendations',
+    //   path: '/getRecommendations',
+    //   component: GetRecommendations,
+    //   exact: true,
+    // },
+    // {
+    //   key: 'myPlaylists',
+    //   path: '/myPlaylists',
+    //   component: MyPlaylists,
+    //   exact: true,
+    // },
+  ];
 
   return (
-    <div>
-      {/* <Login handleClick={handleClick} /> */}
-      <Navbar />
+    <>
+      <Title setShowNav={setShowNav} />
+      <Navbar showNav={showNav} setShowNav={setShowNav} />
+      <div id='main'>
+        <div></div>
+        <div>
+          <Router>
+            {/* <Switch> */}
+            <Route exact path={['/', '/settings', '/settings/*']}>
+              {/* <Switch> */}
+              {divOneRoutes.map((x) => (
+                <x.component {...x} />
+              ))}
+              {/* </Switch> */}
+            </Route>
+            {/* </Switch> */}
+          </Router>
+          <Div1 />
+          <Div2 />
+        </div>
+        <Div3 />
+      </div>
+      {/* <BuildClass />
       <Search
         results={searchResults}
         handleClick={handleClick}
@@ -151,8 +226,9 @@ const App = () => {
         results={pTracks}
         handleClick={handleClick}
         playIcon={playIcon}
-      />
-    </div>
+      /> */}
+      <p id='credit'>Background effect provided by saunders.io</p>
+    </>
   );
 };
 

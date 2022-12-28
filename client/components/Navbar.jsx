@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 
 const Navbar = (props) => {
   return (
-    <div id='header'>
-      <h1>Octave</h1>
-      <h4>Because it's a play on music words..</h4>
-      <form action='/login'>
-        <input type='submit' value='Authorize w/Spotify'></input>
-      </form>
-      <form action='/refresh_token'>
-        <input type='submit' value='Refresh Spotify Auth'></input>
-      </form>
+    <div id='navbar'>
+      <ul>
+        <li id='li_build'>Build a workout</li>
+        <li id='li_search'>Spearch Spotify</li>
+        <li id='li_rec'>Get recommendations</li>
+        <li id='li_account'>My account</li>
+        <li id='li_saved'>My saved workouts</li>
+        <li id='li_playlists'>My playlists</li>
+      </ul>
     </div>
   );
 };
