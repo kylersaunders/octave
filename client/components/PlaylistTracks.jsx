@@ -1,7 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useId } from 'react';
+//import helper functions
+import { playIcon } from '../utils/helperFunctions';
 
-const Recommendations = (props) => {
+const PlaylistTracks = (props) => {
   const { handleClick, results, playIcon } = props;
+  // const ref = useId();
+
+  // function handleClickLocal(e) {
+  //   const audio = document.getElementById(`prev+${e.target.id}`);
+  //   console.log('click', audio, e.target.id);
+  //   audio.paused ? audio.play() : audio.pause();
+  // }
   return (
     <table>
       <thead>
@@ -12,7 +21,7 @@ const Recommendations = (props) => {
           <th>Popularity</th>
           <th>Mins</th>
           <th>BPM</th>
-          <th>Add</th>
+          <th>Get Recs</th>
         </tr>
       </thead>
       <tbody>
@@ -28,9 +37,10 @@ const Recommendations = (props) => {
           return (
             <tr>
               <td>
-                <a target='_blank' href={preview_url}>
-                  <img height='20px' class='play' src={playIcon}></img>
-                </a>
+                {/* <a onClick={handleClickLocal}> */}
+                <audio controls src={preview_url} id={'prev' + id}></audio>
+                {/* <img id={id} height='20px' class='play' src={playIcon}></img> */}
+                {/* </a> */}
               </td>
               <td>{name}</td>
               <td>{artists_names}</td>
@@ -40,8 +50,9 @@ const Recommendations = (props) => {
               <td>
                 <input
                   id={`${id}`}
-                  className='addRecs'
-                  type='checkbox'
+                  name='getRecommendations'
+                  type='submit'
+                  value='Seed'
                   onClick={handleClick}
                 ></input>
               </td>
@@ -53,4 +64,4 @@ const Recommendations = (props) => {
   );
 };
 
-export default Recommendations;
+export default PlaylistTracks;

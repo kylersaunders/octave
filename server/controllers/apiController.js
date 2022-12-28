@@ -1,10 +1,24 @@
 const db = require('../models/postgresQLmodel');
+const path = require('path');
 const fetch = (...args) =>
   import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 var request = require('request'); //deprecated - try to replace
 const { query } = require('express');
 const apiController = {};
+
+//==================AUTH=========================================================================
+apiController.checkAuth = async (req, res, next) => {
+  if (req.cookies.auth) {
+    console.log('cookie');
+    next();
+  } else {
+    console.log('no cookie');
+    res
+      .status(200)
+      .sendFile(path.resolve(__dirname, '../../client/login.html'));
+  }
+};
 
 //==================SUMMARY=========================================================================
 
@@ -16,7 +30,7 @@ apiController.getFromSpotify = async (req, res, next) => {
     });
     // console.log('=======server', res.locals.response);
     res.locals.body = await res.locals.response.json();
-    // console.log('=======server', res.locals.response);
+    // console.log('SERVER====getFromSpotify BODY==', res.locals.body);
     next();
   } catch (err) {
     next(err);
@@ -126,19 +140,19 @@ apiController.getTrack = (req, res, next) => {
 apiController.getSearch = (req, res, next) => {
   // res.locals.q = 'sabotage';
   searchTerms = new URLSearchParams(req.query.q).toString();
-  console.log('api QUERY==========', searchTerms);
+  // console.log('api QUERY==========', searchTerms);
   const query = {
     q: searchTerms,
     type: 'track',
     include_external: 'audio',
-    limit: '15', //20 is default
+    limit: '5', //20 is default
   };
   let queryString = '';
   Object.keys(query).forEach((x) => {
     queryString += x + '=' + query[x] + '&';
   });
   queryString = queryString.slice(0, queryString.length - 1);
-  // console.log('querystring', queryString);
+  console.log('SERVER=====getSearch', queryString);
   res.locals.url = `https://api.spotify.com/v1/search?=${queryString}`;
   // console.log('url: ', res.locals.url);
   next();
@@ -169,6 +183,10 @@ apiController.addItemsToPlaylist = (req, res, next) => {
   // console.log('server=======', res.locals.playlist_id, res.locals.body);
   // res.locals.body = { uris: res.locals.tracksToAdd };
   res.locals.url = `https://api.spotify.com/v1/playlists/${res.locals.playlist_id}/tracks`;
+  next();
+};
+
+apiController.getAudioFeatures = (req, res, next) => {
   next();
 };
 

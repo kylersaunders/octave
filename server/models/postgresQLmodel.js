@@ -17,7 +17,7 @@ create table if not exists tokens
 */
 module.exports = {
   query: (text, params, callback) => {
-    console.log('Executed PostgresQL query to ElephanSQL: ', text, params);
+    console.log('Executed PostgresQL query to ElephantSQL ');
     return pool.query(text, params, callback);
   },
 };

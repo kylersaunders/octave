@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: process.env.NODE_ENV,
-  entry: './client/index.js',
+  entry: './client/index.jsx',
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js',
@@ -21,8 +21,13 @@ module.exports = {
         },
       },
       {
-        test: /\.scss$/i,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        test: /\.?css$/i,
+        use: [
+          'style-loader',
+          { loader: 'css-loader', options: { importLoaders: 1 } },
+          'postcss-loader',
+          'sass-loader',
+        ],
       },
     ],
   },
@@ -34,7 +39,7 @@ module.exports = {
     devMiddleware: { publicPath: '/' },
     port: 8080,
     proxy: {
-      '/': 'http://localhost:3000/',
+      '/': 'http://localhost:3434/',
     },
   },
   plugins: [
