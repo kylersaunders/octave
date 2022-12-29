@@ -1,8 +1,30 @@
+//react
 import React, { useState, useEffect } from 'react';
 import { render } from 'react-dom';
-import App from './components/App.jsx';
+
+//react-router
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+//react-redux
+import { Provider } from 'react-redux';
+import store from './store';
+
+//import styles
 import styles from './scss/application.scss';
 
+//import main App components
+import App from './components/App.jsx';
+import ErrorPage from './components/ErrorPage.jsx';
+
+//import navbar level 1 components
+import BuildWorkout from './components/BuildWorkout.jsx';
+import SearchSpotify from './components/SearchSpotify.jsx';
+import GetRecommendations from './components/GetRecommendations.jsx';
+import MyAccount from './components/MyAccount.jsx';
+import MySavedWorkouts from './components/MySavedWorkouts.jsx';
+import MyPlaylists from './components/MyPlaylists.jsx';
+
+//testing new ui background
 document.addEventListener('touchmove', function (e) {
   e.preventDefault();
 });
@@ -62,4 +84,49 @@ document.onclick = i;
 document.ontouchstart = i;
 i();
 
-render(<App />, document.getElementById('root'));
+//initialize router
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: '/',
+        element: <BuildWorkout />,
+      },
+      {
+        path: '/BuildWorkout/',
+        element: <BuildWorkout />,
+      },
+      {
+        path: '/SearchSpotify/',
+        element: <SearchSpotify />,
+      },
+      {
+        path: '/GetRecommendations/',
+        element: <GetRecommendations />,
+      },
+      {
+        path: '/MyAccount/',
+        element: <MyAccount />,
+      },
+      {
+        path: '/MySavedWorkouts/',
+        element: <MySavedWorkouts />,
+      },
+      {
+        path: '/MyPlaylists/',
+        element: <MyPlaylists />,
+      },
+    ],
+  },
+]);
+
+//render app
+render(
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>,
+  document.getElementById('root')
+);

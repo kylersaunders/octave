@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const Playlists = (props) => {
+export default (props) => {
   const { handleClick, results } = props;
   return (
     <div>
@@ -76,5 +76,3 @@ const Playlists = (props) => {
     </div>
   );
 };
-
-export default Playlists;

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import PlaylistTracks from './PlaylistTracks.jsx';
 
-const Search = (props) => {
+export default (props) => {
   const { handleClick, results, playIcon } = props;
   return (
-    <div>
+    <>
       <h2>Search Spotify</h2>
       <form id='getSearchForm' onSubmit={handleClick}>
         <input
@@ -27,7 +27,6 @@ const Search = (props) => {
           playIcon={playIcon}
         />
       </div>
-    </div>
+    </>
   );
 };
-export default Search;

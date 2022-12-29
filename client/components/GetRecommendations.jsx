@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import RecommendationsParameters from './RecommendationsParameters.jsx';
 
-const Recommendations = (props) => {
+export default (props) => {
   const { handleClick, results, playIcon } = props;
   return (
     <div>
@@ -56,5 +56,3 @@ const Recommendations = (props) => {
     </div>
   );
 };
-
-export default Recommendations;

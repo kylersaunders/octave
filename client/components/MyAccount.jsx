@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const MyAccount = (props) => {
+export default (props) => {
   //   const { setShowNav } = props;
   return (
     <>
@@ -8,5 +8,3 @@ const MyAccount = (props) => {
     </>
   );
 };
-
-export default MyAccount;

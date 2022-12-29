@@ -1,17 +1,32 @@
 import React, { useState, useEffect } from 'react';
+import { Outlet, Link } from 'react-router-dom';
 
-const Navbar = (props) => {
+export default () => {
   return (
     <div id='navbar'>
       <ul>
-        <li id='li_build'>Build a workout</li>
-        <li id='li_search'>Spearch Spotify</li>
-        <li id='li_rec'>Get recommendations</li>
-        <li id='li_account'>My account</li>
-        <li id='li_saved'>My saved workouts</li>
-        <li id='li_playlists'>My playlists</li>
+        <li>
+          <Link to={'BuildWorkout/'}>'Build Workout'</Link>
+        </li>
+        <li>
+          <Link to={'SearchSpotify/'}>'Search Spotify'</Link>
+        </li>
+        <li>
+          <Link to={'GetRecommendations/'}>'Get Recommendations'</Link>
+        </li>
+        <li>
+          <Link to={'MyAccount/'}>'My Account'</Link>
+        </li>
+        <li>
+          <Link to={'MySavedWorkouts/'}>'My Saved Workouts'</Link>
+        </li>
+        <li>
+          <Link to={'MyPlaylists/'}>'My Playlists'</Link>
+        </li>
+        <li></li>
+        <li>Refresh Auth</li>
+        <li>Log out</li>
       </ul>
     </div>
   );
 };
-export default Navbar;

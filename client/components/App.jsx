@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import { Route, Routes, navigate } from 'react-router-dom';
 import { traceDeprecation } from 'process';
 import { parse } from 'querystring';
 import {
@@ -9,24 +8,26 @@ import {
   Router,
   Switch,
   Link,
+  Outlet,
 } from 'react-router-dom';
 
-//import components
-import Recommendations from './Recommendations.jsx';
-import PlaylistTracks from './PlaylistTracks.jsx';
-import Playlists from './Playlists.jsx';
-import Navbar from './Navbar.jsx';
-import Search from './Search.jsx';
+//import App components
 import Login from './Login.jsx';
 import Title from './Title.jsx';
-import Div1 from './Div1.jsx';
-import Div2 from './Div2.jsx';
-import Div3 from './Div3.jsx';
+import Navbar from './Navbar.jsx';
+import ErrorPage from './ErrorPage.jsx';
 
-//OPTION components
-import MyAccount from './MyAccount.jsx';
+//import navbar level 1 components
 import BuildWorkout from './BuildWorkout.jsx';
-import BuildClass from './BuildClass.jsx';
+import SearchSpotify from './SearchSpotify.jsx';
+import GetRecommendations from './GetRecommendations.jsx';
+import MyAccount from './MyAccount.jsx';
+import MySavedWorkouts from './MySavedWorkouts.jsx';
+import MyPlaylists from './MyPlaylists.jsx';
+
+//import detail level 2 components
+import PlaylistTracks from './PlaylistTracks.jsx';
+import Div3 from './Div3.jsx';
 
 //import styles
 // import './app.css';
@@ -44,6 +45,44 @@ import {
   logIn,
 } from '../utils/endpointFunctions';
 
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: '/',
+        element: <BuildWorkout />,
+      },
+      {
+        path: '/BuildWorkout/',
+        element: <BuildWorkout />,
+      },
+      {
+        path: '/SearchSpotify/',
+        element: <SearchSpotify />,
+      },
+      {
+        path: '/GetRecommendations/',
+        element: <GetRecommendations />,
+      },
+      {
+        path: '/MyAccount/',
+        element: <MyAccount />,
+      },
+      {
+        path: '/MySavedWorkouts/',
+        element: <MySavedWorkouts />,
+      },
+      {
+        path: '/MyPlaylists/',
+        element: <MyPlaylists />,
+      },
+    ],
+  },
+]);
+
 //render App
 const App = () => {
   //lists to populate components
@@ -56,37 +95,6 @@ const App = () => {
   const [playlistOffset, incrementPlaylistOffset] = useState(0);
   const [loggedIn, setLoggedIn] = useState('');
   const [showNav, setShowNav] = useState(false);
-
-  let lastClicked;
-  let tracksToAdd = {};
-
-  // window.onSpotifyIframeApiReady = (IFrameAPI) => {
-  //   console.log('SPOTIFY', window.onSpotifyIframeApiReady, IFrameAPI);
-  //   let base = document.getElementById('root');
-  //   let element = document.createElement('div');
-  //   element.setAttribute('id', 'embed-iframe');
-  //   let button = document.createElement('button');
-  //   button.setAttribute('id', 'testBtn');
-  //   button.setAttribute(
-  //     'data-spotify-id',
-  //     'spotify:episode:6I3ZzCxRhRkNqnQNo8AZPV'
-  //   );
-  //   element.appendChild(button);
-  //   base.appendChild(element);
-  //   let options = {
-  //     width: '60%',
-  //     height: '200',
-  //     // uri: 'spotify:episode:43cbJh4ccRD7lzM2730YK3',
-  //     uri: 'spotify:episode:1oj4KLsbYhvfHFnhdb3twP',
-  //   };
-  //   let callback = (EmbedController) => {
-  //     let x = document.getElementById('testBtn');
-  //     x.addEventListener('click', () => {
-  //       EmbedController.loadUri(x.dataset.spotifyId);
-  //     });
-  //   };
-  //   IFrameAPI.createController(element, options, callback);
-  // };
 
   //switchboard based on click
   const handleClick = async (e) => {
@@ -143,45 +151,6 @@ const App = () => {
     }
   };
 
-  const divOneRoutes = [
-    {
-      key: 'myAccount',
-      path: '/',
-      component: MyAccount,
-      exact: true,
-    },
-    {
-      key: 'buildWorkout',
-      path: '/buildWorkout',
-      component: BuildWorkout,
-      exact: true,
-    },
-    // {
-    //   key: 'savedWorkouts',
-    //   path: '/savedWorkouts',
-    //   component: SavedWorkouts,
-    //   exact: true,
-    // },
-    // {
-    //   key: 'searchSpotify',
-    //   path: '/searchSpotify',
-    //   component: SearchSpotify,
-    //   exact: true,
-    // },
-    // {
-    //   key: 'getRecommendations',
-    //   path: '/getRecommendations',
-    //   component: GetRecommendations,
-    //   exact: true,
-    // },
-    // {
-    //   key: 'myPlaylists',
-    //   path: '/myPlaylists',
-    //   component: MyPlaylists,
-    //   exact: true,
-    // },
-  ];
-
   return (
     <>
       <Title setShowNav={setShowNav} />
@@ -189,44 +158,15 @@ const App = () => {
       <div id='main'>
         <div></div>
         <div>
-          <Router>
-            {/* <Switch> */}
-            <Route exact path={['/', '/settings', '/settings/*']}>
-              {/* <Switch> */}
-              {divOneRoutes.map((x) => (
-                <x.component {...x} />
-              ))}
-              {/* </Switch> */}
-            </Route>
-            {/* </Switch> */}
-          </Router>
-          <Div1 />
-          <Div2 />
+          <div id='Div1'>
+            <Outlet />
+          </div>
+          <div id='Div2'>
+            <h1>Div2</h1>
+          </div>
         </div>
         <Div3 />
       </div>
-      {/* <BuildClass />
-      <Search
-        results={searchResults}
-        handleClick={handleClick}
-        playIcon={playIcon}
-      />
-      <Recommendations
-        results={recommendations}
-        handleClick={handleClick}
-        playIcon={playIcon}
-      />
-      <Playlists
-        results={playlists}
-        handleClick={handleClick}
-        playIcon={playIcon}
-      />
-      <h2>Playlist Tracks</h2>
-      <PlaylistTracks
-        results={pTracks}
-        handleClick={handleClick}
-        playIcon={playIcon}
-      /> */}
       <p id='credit'>Background effect provided by saunders.io</p>
     </>
   );
