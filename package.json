@@ -6,7 +6,8 @@
   "scripts": {
     "start": "NODE_ENV=production nodemon server/server.js",
     "build": "NODE_ENV=production webpack",
-    "dev": " concurrently \"NODE_ENV=development nodemon server/server.js\" \"NODE_ENV=development webpack-dev-server --open\""
+    "dev": " concurrently \"NODE_ENV=development nodemon server/server.js\" \"NODE_ENV=development webpack-dev-server --open\"",
+    "test": "jest --verbose --update-snapshot"
   },
   "nodemonConfig": {
     "ignore": [
@@ -31,7 +32,6 @@
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.9",
     "react-router-dom": "^6.5.0",
-    "redux": "^4.0.5",
     "request": "^2.88.2",
     "webpack": "^5.57.1"
   },
@@ -39,6 +39,9 @@
     "@babel/core": "^7.20.5",
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-react": "^7.18.6",
+    "@testing-library/jest-dom": "^5.15.0",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^13.5.0",
     "babel-loader": "^9.1.0",
     "concurrently": "^6.0.2",
     "cross-env": "^7.0.3",
@@ -46,16 +49,20 @@
     "daisyui": "^2.6.0",
     "html-webpack-plugin": "^5.5.0",
     "isomorphic-fetch": "^3.0.0",
+    "jest": "^29.3.1",
+    "jest-environment-jsdom": "^28.1.0",
     "mini-css-extract-plugin": "^2.7.1",
     "nodemon": "^2.0.7",
     "postcss": "^8.4.7",
     "postcss-loader": "^6.2.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-test-renderer": "^17.0.2",
     "redux-devtools-extension": "^2.13.9",
     "sass": "^1.56.1",
     "sass-loader": "^13.2.0",
     "style-loader": "^3.3.1",
+    "supertest": "^6.2.3",
     "tailwindcss": "^3.0.23",
     "webpack": "^5.75.0",
     "webpack-cli": "^4.8.0",
