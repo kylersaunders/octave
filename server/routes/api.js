@@ -56,6 +56,15 @@ apiRouter.get(
   }
 );
 apiRouter.get(
+  '/buildWorkout',
+  apiController.getAccessToken,
+  apiController.getRecommendations,
+  apiController.getFromSpotify,
+  (req, res) => {
+    res.json(res.locals.body).send();
+  }
+);
+apiRouter.get(
   '/getRecommendations',
   apiController.getAccessToken,
   apiController.getRecommendations,

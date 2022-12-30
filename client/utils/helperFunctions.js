@@ -23,7 +23,25 @@ module.exports = {
         });
       });
     }
-    // console.log('output', output);
+    console.log('output', output);
+    return output;
+  },
+  randomBuild: (tracks, obj) => {
+    let ms = obj.target_duration_mins * 1000 * 60;
+    let over = obj.target_time_over * 1000;
+    const output = [];
+    while (ms > over) {
+      console.log('over', ms);
+      const temp = Math.floor(Math.random() * tracks.length);
+      output.push(tracks[temp]);
+      ms -= tracks[temp].duration_ms;
+      // while (ms < -over) {
+      //   console.log('under');
+      //   const del = output.pop();
+      //   ms += del.duration_ms;
+      // }
+    }
+
     return output;
   },
   playIcon:

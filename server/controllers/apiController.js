@@ -9,7 +9,7 @@ const apiController = {};
 
 //==================AUTH=========================================================================
 apiController.checkAuth = async (req, res, next) => {
-  if (req.cookies.auth) {
+  if (req.cookies['auth']) {
     console.log('cookie');
     next();
   } else {
@@ -26,7 +26,8 @@ apiController.getFromSpotify = async (req, res, next) => {
   try {
     res.locals.response = await fetch(res.locals.url, {
       method: 'get',
-      headers: { Authorization: 'Bearer ' + res.locals.access_token },
+      // headers: { Authorization: 'Bearer ' + res.locals.access_token },
+      headers: { Authorization: 'Bearer ' + req.cookies['auth'] },
     });
     // console.log('=======server', res.locals.response);
     res.locals.body = await res.locals.response.json();
@@ -68,10 +69,16 @@ apiController.deleteFromSpotify = async (req, res, next) => {
 //===================================UNIQUE======GET=======================================================================
 
 apiController.getAccessToken = (req, res, next) => {
-  db.query('select access_token from tokens', (err, data) => {
-    res.locals.access_token = data.rows[0].access_token;
-    next();
-  });
+  // db.query('select access_token from tokens', (err, data) => {
+  //   res.locals.access_token = data.rows[0].access_token;
+  //   next();
+  // });
+  // console.log('cookies', req.cookies);
+  return req.cookies
+    ? req.cookies['auth']
+      ? next()
+      : res.redirect('/login')
+    : res.redirect('/login');
 };
 
 apiController.getUserId = (req, res, next) => {
@@ -109,14 +116,15 @@ apiController.getRecommendations = (req, res, next) => {
   //   // min_energy: '.4',
   //   // min_danceability: '.5',
   // };
-  const query = {
-    seed_tracks: req.query.seed,
-    min_tempo: req.query.min,
-    max_tempo: req.query.max,
-  };
+  // const query = {
+  //   seed_tracks: req.query.seed,
+  //   min_tempo: req.query.min,
+  //   max_tempo: req.query.max,
+  // };
   let queryString = '';
-  Object.keys(query).forEach((x) => {
-    queryString += x + '=' + query[x] + '&';
+  // console.log('REQQUERY', Object.keys(req.query));
+  Object.entries(req.query).forEach((x) => {
+    queryString += x[0] + '=' + x[1] + '&';
   });
   queryString = queryString.slice(0, queryString.length - 1);
   console.log('===========GET RECS querystring', queryString);

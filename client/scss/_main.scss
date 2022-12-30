@@ -62,18 +62,31 @@ canvas {
   left: -2rem;
 }
 
+#playlistSidebar {
+  position: absolute;
+  right: -28rem;
+  top: 10rem;
+  z-index: 100;
+  transition: 0.3s;
+  padding: 15px;
+  width: 30rem;
+  font-size: 20px;
+  border-radius: 0 5px 5px 0;
+  background: rgb(86, 86, 86, 0.95);
+  height: 100%; //35rem;
+  overflow: scroll;
+}
+#playlistSidebar:hover {
+  right: 0rem;
+}
+
 #main {
   position: absolute;
   top: 10rem;
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 8fr 6fr;
-}
-
-#Div3 {
-  background-color: rgb(234, 234, 234);
-  border-radius: 2%;
-  margin: 1rem;
+  grid-template-columns: 1fr 8fr 1fr;
+  // background-color: blue;
 }
 
 img .play {

@@ -46,6 +46,13 @@ module.exports = {
         return data.tracks;
       });
   },
+  buildWorkout: async (queryString) => {
+    return await fetch(`/api/buildWorkout?${queryString}`)
+      .then((data) => data.json())
+      .then((data) => {
+        return data;
+      });
+  },
   getMyPlaylists: async (playlistOffset) => {
     const limit = document.getElementById('playlistLimit').value || 10;
     let lists = await fetch(

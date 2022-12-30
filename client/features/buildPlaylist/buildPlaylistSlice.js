@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { list } from 'postcss';
 
 export const buildPlaylistSlice = createSlice({
   name: 'playlistTracks',
