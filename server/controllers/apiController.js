@@ -9,15 +9,11 @@ const apiController = {};
 
 //==================AUTH=========================================================================
 apiController.checkAuth = async (req, res, next) => {
-  if (req.cookies['auth']) {
-    console.log('cookie');
-    next();
-  } else {
-    console.log('no cookie');
-    res
-      .status(200)
-      .sendFile(path.resolve(__dirname, '../../client/login.html'));
-  }
+  return req.cookies
+    ? req.cookies['sA']
+      ? next()
+      : res.redirect('/login')
+    : res.redirect('/login');
 };
 
 //==================SUMMARY=========================================================================
@@ -27,7 +23,7 @@ apiController.getFromSpotify = async (req, res, next) => {
     res.locals.response = await fetch(res.locals.url, {
       method: 'get',
       // headers: { Authorization: 'Bearer ' + res.locals.access_token },
-      headers: { Authorization: 'Bearer ' + req.cookies['auth'] },
+      headers: { Authorization: 'Bearer ' + req.cookies['sA'] },
     });
     // console.log('=======server', res.locals.response);
     res.locals.body = await res.locals.response.json();
@@ -68,18 +64,18 @@ apiController.deleteFromSpotify = async (req, res, next) => {
 
 //===================================UNIQUE======GET=======================================================================
 
-apiController.getAccessToken = (req, res, next) => {
-  // db.query('select access_token from tokens', (err, data) => {
-  //   res.locals.access_token = data.rows[0].access_token;
-  //   next();
-  // });
-  // console.log('cookies', req.cookies);
-  return req.cookies
-    ? req.cookies['auth']
-      ? next()
-      : res.redirect('/login')
-    : res.redirect('/login');
-};
+// apiController.getAccessToken = (req, res, next) => {
+//   // db.query('select access_token from tokens', (err, data) => {
+//   //   res.locals.access_token = data.rows[0].access_token;
+//   //   next();
+//   // });
+//   // console.log('cookies', req.cookies);
+//   return req.cookies
+//     ? req.cookies['sA']
+//       ? next()
+//       : res.redirect('/login')
+//     : res.redirect('/login');
+// };
 
 apiController.getUserId = (req, res, next) => {
   res.locals.user_id = res.locals.body.id;

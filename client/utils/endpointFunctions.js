@@ -17,6 +17,16 @@ module.exports = {
         return data.tracks.items;
       });
   },
+  getLocalSearch: async (term) => {
+    let params = new URLSearchParams('q=' + term + '&limit=5').toString();
+
+    return await fetch(`/api/search?q=${params}`)
+      .then((data) => data.json())
+      .then((data) => {
+        // console.log('data', data);
+        return data.tracks.items;
+      });
+  },
   createPlaylist: async (e) => {
     let newPlaylistParams = {
       name: e.target.form[0].value,
@@ -54,15 +64,12 @@ module.exports = {
       });
   },
   getMyPlaylists: async (playlistOffset) => {
-    const limit = document.getElementById('playlistLimit').value || 10;
+    const limit = document.getElementById('playlistLimit')?.value || 10;
     let lists = await fetch(
       `/api/getUsersPlaylists?offset=${playlistOffset}&limit=${limit}`
     )
       .then((data) => data.json())
-      .then((data) => {
-        // console.log('lists:', data.items);
-        return data.items;
-      });
+      .then((data) => data.items);
     return lists.map((x) => {
       const tracks = x.tracks.total;
       const image_url = x.images[2]?.url;

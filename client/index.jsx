@@ -12,17 +12,20 @@ import store from './store';
 //import styles
 import styles from './scss/application.scss';
 
-//import main App components
+//import main components
 import App from './components/App.jsx';
 import ErrorPage from './components/ErrorPage.jsx';
 
-//import navbar level 1 components
+//import level 1 components
 import BuildWorkout from './components/BuildWorkout.jsx';
-import SearchSpotify from './components/SearchSpotify.jsx';
-import GetRecommendations from './components/GetRecommendations.jsx';
+// import SearchSpotify from './components/SearchSpotify.jsx';
+// import GetRecommendations from './components/GetRecommendations.jsx';
 import MyAccount from './components/MyAccount.jsx';
 import MySavedWorkouts from './components/MySavedWorkouts.jsx';
-import MyPlaylists from './components/MyPlaylists.jsx';
+// import MyPlaylists from './components/MyPlaylists.jsx';
+
+//import level 2 components
+import SelectFeeder from './components/subcomponents/SelectFeeder.jsx';
 
 //testing new ui background
 document.addEventListener('touchmove', function (e) {
@@ -98,15 +101,21 @@ const router = createBrowserRouter([
       {
         path: '/BuildWorkout/',
         element: <BuildWorkout />,
+        children: [
+          {
+            path: '/BuildWorkout/SelectFeeder/',
+            element: <SelectFeeder />,
+          },
+        ],
       },
-      {
-        path: '/SearchSpotify/',
-        element: <SearchSpotify />,
-      },
-      {
-        path: '/GetRecommendations/',
-        element: <GetRecommendations />,
-      },
+      // {
+      //   path: '/SearchSpotify/',
+      //   element: <SearchSpotify />,
+      // },
+      // {
+      //   path: '/GetRecommendations/',
+      //   element: <GetRecommendations />,
+      // },
       {
         path: '/MyAccount/',
         element: <MyAccount />,
@@ -115,10 +124,10 @@ const router = createBrowserRouter([
         path: '/MySavedWorkouts/',
         element: <MySavedWorkouts />,
       },
-      {
-        path: '/MyPlaylists/',
-        element: <MyPlaylists />,
-      },
+      // {
+      //   path: '/MyPlaylists/',
+      //   element: <MyPlaylists />,
+      // },
     ],
   },
 ]);

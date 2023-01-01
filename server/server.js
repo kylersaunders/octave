@@ -14,6 +14,7 @@ const apiController = require('./controllers/apiController');
 const db = require('./models/postgresQLmodel');
 const cs = require('./clientSecret');
 const apiRouter = require('./routes/api');
+const { strict } = require('assert');
 const port = 3434;
 
 const generateRandomString = function (length) {
@@ -48,7 +49,7 @@ app.get('/login', async function (req, res) {
   if (state === null) {
     state = generateRandomString(16);
     res.cookie(stateKey, state);
-    db.query('truncate table tokens');
+    // db.query('truncate table tokens');
     res.redirect(
       'https://accounts.spotify.com/authorize?' +
         querystring.stringify({
@@ -81,13 +82,18 @@ app.get('/login', async function (req, res) {
 
     const access = await axios(postRequest);
     if (access.status === 200) {
-      const query = {
-        values: [access.data.access_token, access.data.refresh_token],
-        text: 'INSERT INTO tokens (access_token, refresh_token) VALUES ($1,$2) RETURNING *;',
-      };
-      db.query(query);
+      // const query = {
+      //   values: [access.data.access_token, access.data.refresh_token],
+      //   text: 'INSERT INTO tokens (access_token, refresh_token) VALUES ($1,$2) RETURNING *;',
+      // };
+      // db.query(query);
       console.log('**********auth success*********');
-      res.cookie('auth', access.data.access_token, { maxAge: 3600000 });
+      res.cookie('sA', access.data.access_token, {
+        maxAge: 1000 * 60 * 15,
+        httpOnly: true,
+        secure: true,
+        SameSite: strict,
+      });
       // res.status(200).json(access.data.access_token);
       res.redirect('/');
     } else {
@@ -96,41 +102,41 @@ app.get('/login', async function (req, res) {
   }
 });
 
-app.get('/refresh_token', async function (req, res) {
-  const data = await db
-    .query('select refresh_token from tokens')
-    .then((res) => res);
-  const refresh_token = data.rows[0].refresh_token;
-  const refreshRequest = {
-    url: 'https://accounts.spotify.com/api/token',
-    method: 'post',
-    headers: {
-      Authorization:
-        'Basic ' +
-        Buffer.from(client_id + ':' + client_secret).toString('base64'),
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    data: {
-      grant_type: 'refresh_token',
-      refresh_token,
-    },
-  };
+// app.get('/refresh_token', async function (req, res) {
+//   const data = await db
+//     .query('select refresh_token from tokens')
+//     .then((res) => res);
+//   const refresh_token = data.rows[0].refresh_token;
+//   const refreshRequest = {
+//     url: 'https://accounts.spotify.com/api/token',
+//     method: 'post',
+//     headers: {
+//       Authorization:
+//         'Basic ' +
+//         Buffer.from(client_id + ':' + client_secret).toString('base64'),
+//       'Content-Type': 'application/x-www-form-urlencoded',
+//     },
+//     data: {
+//       grant_type: 'refresh_token',
+//       refresh_token,
+//     },
+//   };
 
-  const refresh = await axios(refreshRequest);
-  if (refresh.status === 200) {
-    const access_token = refresh.data.access_token;
+//   const refresh = await axios(refreshRequest);
+//   if (refresh.status === 200) {
+//     const access_token = refresh.data.access_token;
 
-    db.query('truncate table tokens');
-    const query = {
-      values: [access_token, refresh_token],
-      text: 'INSERT INTO tokens (access_token, refresh_token) VALUES ($1,$2) RETURNING *;',
-    };
+//     // db.query('truncate table tokens');
+//     // const query = {
+//     //   values: [access_token, refresh_token],
+//     //   text: 'INSERT INTO tokens (access_token, refresh_token) VALUES ($1,$2) RETURNING *;',
+//     // };
 
-    db.query(query);
-    console.log('*******refresh success********');
-    res.redirect('/');
-  }
-});
+//     // db.query(query);
+//     console.log('*******refresh success********');
+//     res.redirect('/');
+//   }
+// });
 
 app.use('/api', apiRouter);
 
@@ -149,6 +155,13 @@ if (process.env.NODE_ENV === 'production') {
       .sendFile(path.resolve(__dirname, '../client/index.html'));
   });
 }
+
+app.get('/', apiController.checkAuth, (req, res) => {
+  console.log('HOME REQUESTED');
+  return res
+    .status(200)
+    .sendFile(path.resolve(__dirname, '../client/index.html'));
+});
 
 console.log(`Listening on ${port}`);
 app.listen(port);

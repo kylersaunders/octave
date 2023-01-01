@@ -2,13 +2,13 @@ const express = require('express');
 const apiRouter = express.Router();
 const apiController = require('../controllers/apiController');
 
-apiRouter.get('/getAccessToken', apiController.getAccessToken, (req, res) => {
-  res.json(res.locals.access_token).send();
-});
+// apiRouter.get('/checkAuth', apiController.checkAuth, (req, res) => {
+//   res.json(res.locals.access_token).send();
+// });
 
 apiRouter.get(
   '/getProfile',
-  apiController.getAccessToken,
+  apiController.checkAuth,
   apiController.getProfile,
   apiController.getFromSpotify,
   (req, res) => {
@@ -17,7 +17,7 @@ apiRouter.get(
 );
 apiRouter.get(
   '/getUsersPlaylists',
-  apiController.getAccessToken,
+  apiController.checkAuth,
   apiController.getProfile,
   apiController.getFromSpotify,
   apiController.getUserId,
@@ -29,7 +29,7 @@ apiRouter.get(
 );
 apiRouter.get(
   '/search',
-  apiController.getAccessToken,
+  apiController.checkAuth,
   apiController.getSearch,
   apiController.getFromSpotify,
   (req, res) => {
@@ -39,7 +39,7 @@ apiRouter.get(
 );
 apiRouter.get(
   '/getTrack',
-  apiController.getAccessToken,
+  apiController.checkAuth,
   apiController.getTrack,
   apiController.getFromSpotify,
   (req, res) => {
@@ -48,7 +48,7 @@ apiRouter.get(
 );
 apiRouter.get(
   '/getTracks',
-  apiController.getAccessToken,
+  apiController.checkAuth,
   apiController.getTracks,
   apiController.getFromSpotify,
   (req, res) => {
@@ -57,7 +57,7 @@ apiRouter.get(
 );
 apiRouter.get(
   '/buildWorkout',
-  apiController.getAccessToken,
+  apiController.checkAuth,
   apiController.getRecommendations,
   apiController.getFromSpotify,
   (req, res) => {
@@ -66,7 +66,7 @@ apiRouter.get(
 );
 apiRouter.get(
   '/getRecommendations',
-  apiController.getAccessToken,
+  apiController.checkAuth,
   apiController.getRecommendations,
   apiController.getFromSpotify,
   (req, res) => {
@@ -75,7 +75,7 @@ apiRouter.get(
 );
 apiRouter.get(
   '/getTracksFeatures',
-  apiController.getAccessToken,
+  apiController.checkAuth,
   apiController.getTracksFeatures,
   apiController.getFromSpotify,
   (req, res) => {
@@ -85,7 +85,7 @@ apiRouter.get(
 
 apiRouter.post(
   '/createPlaylist',
-  apiController.getAccessToken,
+  apiController.checkAuth,
   apiController.getProfile,
   apiController.getFromSpotify,
   apiController.getUserId,
@@ -99,7 +99,7 @@ apiRouter.post(
 
 apiRouter.post(
   '/addItemsToPlaylist',
-  apiController.getAccessToken,
+  apiController.checkAuth,
   apiController.addItemsToPlaylist,
   apiController.postToSpotify,
   (req, res) => {

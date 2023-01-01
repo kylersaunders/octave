@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export const buildWorkoutSlice = createSlice({
-  name: 'workoutSections',
+  name: 'buildWorkout',
   initialState: {
     value: 0,
     template: {},
-    result: {},
+    result: null,
+    seeds: null,
   },
   reducers: {
     increment: (state) => {
@@ -27,7 +28,15 @@ export const buildWorkoutSlice = createSlice({
       state.result = action.payload;
     },
     deleteTrack: (state, action) => {
-      state.result = state.result.filter((x) => x.id != action.payload);
+      console.log('state', state.result);
+      // for (const x of Object.entries(state.result)) {
+      //   for (const y of Object.entries(state.result[x])) {
+      //     if (y.id === action.payload) {
+      //       console.log(state.result[x][y]);
+      //       // delete state.result[x][y];
+      //     }
+      //   }
+      // }
     },
     advanceTrack: (state, action) => {
       state.result = state.result.filter((x) => x.id != action.payload);

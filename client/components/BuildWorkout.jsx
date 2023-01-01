@@ -1,35 +1,40 @@
+//import libraries
 import React, { useState, useEffect, useRef } from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
+import { Outlet } from 'react-router-dom';
+
+//import components
+import SearchResults from './SearchResults.jsx';
+
+//import functions
 import {
   decrement,
   increment,
-  incrementByAmount,
-  count,
-  updateTemplate,
   updatePlaylist,
-  selectTemplate,
-} from '../features/buildWorkout/buildWorkoutSlice';
-import { buildWorkout } from '../utils/endpointFunctions';
+} from '../reducers/buildWorkoutSlice';
+import { buildWorkout, getLocalSearch } from '../utils/endpointFunctions';
 import { buildShortRecQueryString } from '../utils/endpointQueries';
 import { parseResults, randomBuild } from '../utils/helperFunctions';
 
+//map state
+function mapStateToProps(state) {
+  return {
+    workoutSections: state.buildWorkout.value,
+    workoutTemplate: state.buildWorkout.template,
+    workoutResult: state.buildWorkout.result,
+    workoutSeeds: state.buildWorkout.seeds,
+  };
+}
+
+//render component
 const BuildWorkout = (props) => {
-  const { workoutSections, workoutTemplate } = props;
+  const { workoutSections, workoutTemplate, workoutResult, workoutSeeds } =
+    props;
   const dispatch = useDispatch();
 
-  const ref = useRef();
-
-  // const currentWorkout = useSelector(updateTemplate);
-  // const currentSections = useSelector(count);
-
-  // console.log('count', currentSections);
-
-  //get reducer functions
-  // const selector1 = useSelector(selectSections);
-  // let selector2 = useSelector(addPlaylistTracks);
-  // const selector3 = useSelector(selectPlaylistTracks);
-  // const updateTemplate = useDispatch();
-  // const currTemplate = useSelector(selectTemplaxte);
+  const [showSearchDiv, updateShowSearchDiv] = useState(false);
+  const [showMyPlaylists, updateShowMyPlaylists] = useState(false);
+  const [seedTracks, updateSeedTracks] = useState({});
 
   const sectionsArray = Array.from(Array(workoutSections).keys());
 
@@ -40,6 +45,11 @@ const BuildWorkout = (props) => {
       if (x.id !== '') {
         !workout[x.id] ? (workout[x.id] = {}) : '';
         workout[x.id][x.name] = x.value;
+        if (seedTracks[x.id]) {
+          workout[x.id]['seed'] = seedTracks[x.id];
+        } else {
+          workout[x.id]['seed'] = [];
+        }
       }
     });
     const results = {};
@@ -69,7 +79,7 @@ const BuildWorkout = (props) => {
                 <h3>
                   <label>Section {x + 1}</label>
                 </h3>
-                <label>Duration (mins):</label>
+                <label>How long is the section in mins? </label>
                 <input
                   type='number'
                   id={x + 1}
@@ -79,7 +89,8 @@ const BuildWorkout = (props) => {
                   max={60}
                   defaultValue={10}
                 ></input>
-                <label>+/- (seconds):</label>
+                <br></br>
+                <label>+/- how many seconds? </label>
                 <input
                   type='number'
                   id={x + 1}
@@ -89,6 +100,7 @@ const BuildWorkout = (props) => {
                   max={120}
                   defaultValue={60}
                 ></input>
+                <br></br>
                 <label>SPM min:</label>
                 <input
                   type='number'
@@ -99,6 +111,7 @@ const BuildWorkout = (props) => {
                   max={45}
                   defaultValue={22}
                 ></input>
+                <br></br>
                 <label>SPM max:</label>
                 <input
                   type='number'
@@ -109,23 +122,38 @@ const BuildWorkout = (props) => {
                   max={45}
                   defaultValue={28}
                 ></input>
+                <br></br>
+                <label>Base the vibe on these songs: </label>
+                <button type='button' onClick={() => updateShowSearchDiv(true)}>
+                  Search Spotify
+                </button>
+                <button
+                  type='button'
+                  onClick={() => updateShowMyPlaylists(true)}
+                >
+                  Search from my playlists
+                </button>
+                {showSearchDiv && (
+                  <SearchResults
+                    updateSeedTracks={updateSeedTracks}
+                    sectionId={x + 1}
+                  />
+                )}
+                <br></br>
               </>
             );
           })}
           {(workoutSections ? true : false) && (
-            <button type='submit'>Generate Workout</button>
+            <>
+              <br></br>
+              <button type='submit'>Generate Workout</button>
+            </>
           )}
         </form>
       )}
+      <Outlet />
     </>
   );
 };
-
-function mapStateToProps(state) {
-  return {
-    workoutSections: state.workoutSections.value,
-    workoutTemplate: state.workoutSections.template,
-  };
-}
 
 export default connect(mapStateToProps)(BuildWorkout);

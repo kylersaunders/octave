@@ -1,5 +1,6 @@
 body {
   background: rgb(47, 47, 47);
+  color: $text-color;
   height: 100%;
   width: 100%;
   margin: 0;
@@ -36,26 +37,31 @@ canvas {
 
 #navbar {
   position: absolute;
-  left: -16rem;
+  left: -18rem;
   top: 15rem;
   z-index: 100;
   transition: 0.3s;
-  padding: 15px;
-  width: 18rem;
+  width: fit-content;
+  height: fit-content; //35rem;
   font-size: 20px;
   border-radius: 0 5px 5px 0;
-  background: rgb(86, 86, 86, 0.95);
-  height: fit-content; //35rem;
+  background: $bg-nav;
   ul {
     list-style-type: none;
   }
-  li {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+  li,
+  .navLink {
+    // margin: 2rem;
+    padding: 2rem;
+    text-decoration: none;
+    color: $text-color;
   }
-  li:hover {
-    color: white;
+  li:hover,
+  .navLink:hover {
+    color: $text-hover;
+    background-color: $bg-hover;
     cursor: pointer;
+    border-radius: 5%;
   }
 }
 #navbar:hover {
@@ -64,17 +70,41 @@ canvas {
 
 #playlistSidebar {
   position: absolute;
-  right: -28rem;
+  right: -70rem;
+  // right: -5rem;
   top: 10rem;
   z-index: 100;
   transition: 0.3s;
   padding: 15px;
-  width: 30rem;
-  font-size: 20px;
-  border-radius: 0 5px 5px 0;
-  background: rgb(86, 86, 86, 0.95);
+  width: 70rem;
+  // width: fit-content;
   height: 100%; //35rem;
+  font-size: 20px;
+  border-radius: 5px 0 5px 0;
+  background: $bg-nav;
   overflow: scroll;
+  h3,
+  table {
+    margin-left: 3rem;
+    border-collapse: collapse;
+  }
+  table,
+  tr,
+  td {
+    border: 0px solid;
+  }
+  tr:hover,
+  tr:active {
+    background-color: $bg-hover;
+    color: $text-hover;
+    border: 1px solid $bg-hover;
+    border-radius: 25%;
+    cursor: pointer;
+  }
+  .playlistEdit:hover,
+  .playlistEdit:active {
+    background-color: red;
+  }
 }
 #playlistSidebar:hover {
   right: 0rem;

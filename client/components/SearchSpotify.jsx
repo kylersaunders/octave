@@ -1,32 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import PlaylistTracks from './PlaylistTracks.jsx';
+import SearchResults from './SearchResults.jsx';
 
-export default (props) => {
-  const { handleClick, results, playIcon } = props;
+const SearchSpotify = (props) => {
+  // const { handleClick, results, playIcon } = props;
   return (
     <>
       <h2>Search Spotify</h2>
-      <form id='getSearchForm' onSubmit={handleClick}>
+      <form id='getSearchForm'>
         <input
           id='getSearchInput'
           type='text'
           placeholder='search by track name'
         ></input>
-        <button
-          id='getSearchSubmit'
-          name='getSearchSubmit'
-          onClick={handleClick}
-        >
+        <button id='getSearchSubmit' name='getSearchSubmit'>
           I'm feeling lucky
         </button>
       </form>
-      <div id='searchResults'>
-        <PlaylistTracks
-          results={results}
-          handleClick={handleClick}
-          playIcon={playIcon}
-        />
-      </div>
+      <div id='searchResults'></div>
     </>
   );
 };
+
+export default SearchSpotify;

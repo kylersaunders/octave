@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import workoutSectionsReducer from './features/buildWorkout/buildWorkoutSlice';
-import playlistTracksReducer from './features/buildPlaylist/buildPlaylistSlice';
+import buildWorkoutReducer from './reducers/buildWorkoutSlice';
+// import createPlaylistReducer from './reducers/createPlaylistSlice';
 
 export default configureStore({
   reducer: {
-    workoutSections: workoutSectionsReducer,
-    playlistTracks: playlistTracksReducer,
+    buildWorkout: buildWorkoutReducer,
+    // createPlaylist: createPlaylistReducer,
   },
 });
