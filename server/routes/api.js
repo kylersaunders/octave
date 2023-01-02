@@ -93,6 +93,7 @@ apiRouter.post(
   apiController.postToSpotify,
   (req, res) => {
     // res.json(res.locals.body)
+    // console.log('Create Playlist', res.locals.body);
     res.json(res.locals.body).send();
   }
 );

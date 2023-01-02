@@ -3,7 +3,7 @@ const path = require('path');
 const fetch = (...args) =>
   import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
-var request = require('request'); //deprecated - try to replace
+// var request = require('request'); //deprecated - try to replace
 const { query } = require('express');
 const apiController = {};
 
@@ -38,7 +38,7 @@ apiController.postToSpotify = async (req, res, next) => {
   try {
     res.locals.response = await fetch(res.locals.url, {
       method: 'post',
-      headers: { Authorization: 'Bearer ' + res.locals.access_token },
+      headers: { Authorization: 'Bearer ' + req.cookies['sA'] },
       body: JSON.stringify(res.locals.body),
     });
     res.locals.body = await res.locals.response.json();

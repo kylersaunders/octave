@@ -23,18 +23,18 @@ module.exports = {
     return await fetch(`/api/search?q=${params}`)
       .then((data) => data.json())
       .then((data) => {
-        // console.log('data', data);
+        console.log('data', data);
         return data.tracks.items;
       });
   },
-  createPlaylist: async (e) => {
+  createPlaylist: async (name) => {
     let newPlaylistParams = {
-      name: e.target.form[0].value,
+      name: name,
       public: false,
       collaborative: false,
     };
     // console.log('new', JSON.stringify(newPlaylistParams));
-    let newP = await fetch(`/api/createPlaylist`, {
+    const newP = await fetch(`/api/createPlaylist`, {
       method: 'post',
       mode: 'cors',
       headers: {
@@ -47,7 +47,8 @@ module.exports = {
         // console.log('data', response);
         return response;
       });
-    e.target.form[0].value = '';
+    return newP;
+    // e.target.form[0].value = '';
   },
   getRecommendations: async (queryString) => {
     return await fetch(`/api/getRecommendations?${queryString}`)
@@ -63,8 +64,8 @@ module.exports = {
         return data;
       });
   },
-  getMyPlaylists: async (playlistOffset) => {
-    const limit = document.getElementById('playlistLimit')?.value || 10;
+  getMyPlaylists: async (playlistOffset, limit) => {
+    // const limit = document.getElementById('playlistLimit')?.value || 10;
     let lists = await fetch(
       `/api/getUsersPlaylists?offset=${playlistOffset}&limit=${limit}`
     )
@@ -90,14 +91,9 @@ module.exports = {
       return x.track;
     });
   },
-  addToPlaylist: async (tracksToAdd) => {
-    let newAdds = [];
-    for (const [key, value] of Object.entries(tracksToAdd)) {
-      // console.log(key, value, tracksToAdd[key]);
-      tracksToAdd[key] === true ? newAdds.push(`spotify:track:${key}`) : '';
-    }
-    // console.log('new', JSON.stringify(newPlaylistParams));
-    return await fetch(`/api/addItemsToPlaylist?list=${lastClicked}`, {
+  addToPlaylist: async (tracksToAdd, playlistId) => {
+    let newAdds = tracksToAdd.map((x) => `spotify:track:${x}`);
+    return await fetch(`/api/addItemsToPlaylist?list=${playlistId}`, {
       method: 'post',
       mode: 'cors',
       headers: {

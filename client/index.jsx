@@ -22,10 +22,10 @@ import BuildWorkout from './components/BuildWorkout.jsx';
 // import GetRecommendations from './components/GetRecommendations.jsx';
 import MyAccount from './components/MyAccount.jsx';
 import MySavedWorkouts from './components/MySavedWorkouts.jsx';
-// import MyPlaylists from './components/MyPlaylists.jsx';
+import MyPlaylists from './components/MyPlaylists.jsx';
 
 //import level 2 components
-import SelectFeeder from './components/subcomponents/SelectFeeder.jsx';
+// import SelectFeeder from './components/subcomponents/SelectFeeder.jsx';
 
 //testing new ui background
 document.addEventListener('touchmove', function (e) {
@@ -101,12 +101,12 @@ const router = createBrowserRouter([
       {
         path: '/BuildWorkout/',
         element: <BuildWorkout />,
-        children: [
-          {
-            path: '/BuildWorkout/SelectFeeder/',
-            element: <SelectFeeder />,
-          },
-        ],
+        // children: [
+        //   {
+        //     path: '/BuildWorkout/SelectFeeder/',
+        //     element: <SelectFeeder />,
+        //   },
+        // ],
       },
       // {
       //   path: '/SearchSpotify/',
@@ -124,10 +124,10 @@ const router = createBrowserRouter([
         path: '/MySavedWorkouts/',
         element: <MySavedWorkouts />,
       },
-      // {
-      //   path: '/MyPlaylists/',
-      //   element: <MyPlaylists />,
-      // },
+      {
+        path: '/MyPlaylists/',
+        element: <MyPlaylists />,
+      },
     ],
   },
 ]);

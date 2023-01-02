@@ -4,7 +4,8 @@ import { connect, useSelector, useDispatch } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 
 //import components
-import SearchResults from './SearchResults.jsx';
+import SearchResults from './subcomponents/SearchResults.jsx';
+import MyPlaylists from './MyPlaylists.jsx';
 
 //import functions
 import {
@@ -20,22 +21,24 @@ import { parseResults, randomBuild } from '../utils/helperFunctions';
 function mapStateToProps(state) {
   return {
     workoutSections: state.buildWorkout.value,
-    workoutTemplate: state.buildWorkout.template,
-    workoutResult: state.buildWorkout.result,
-    workoutSeeds: state.buildWorkout.seeds,
+    // workoutTemplate: state.buildWorkout.template,
+    // workoutResult: state.buildWorkout.result,
+    // workoutSeeds: state.buildWorkout.seeds,
   };
 }
 
 //render component
 const BuildWorkout = (props) => {
-  const { workoutSections, workoutTemplate, workoutResult, workoutSeeds } =
-    props;
+  const { workoutSections } = props;
   const dispatch = useDispatch();
 
+  //local state
   const [showSearchDiv, updateShowSearchDiv] = useState(false);
   const [showMyPlaylists, updateShowMyPlaylists] = useState(false);
   const [seedTracks, updateSeedTracks] = useState({});
+  const [seedTracksNames, updateSeedTracksNames] = useState({});
 
+  //local vars
   const sectionsArray = Array.from(Array(workoutSections).keys());
 
   const generateWorkout = async (e) => {
@@ -46,9 +49,9 @@ const BuildWorkout = (props) => {
         !workout[x.id] ? (workout[x.id] = {}) : '';
         workout[x.id][x.name] = x.value;
         if (seedTracks[x.id]) {
-          workout[x.id]['seed'] = seedTracks[x.id];
+          workout[x.id]['seed_tracks'] = seedTracks[x.id];
         } else {
-          workout[x.id]['seed'] = [];
+          workout[x.id]['seed_tracks'] = '0yc37FvbXRwwFaQxzpxbsd';
         }
       }
     });
@@ -124,18 +127,48 @@ const BuildWorkout = (props) => {
                 ></input>
                 <br></br>
                 <label>Base the vibe on these songs: </label>
-                <button type='button' onClick={() => updateShowSearchDiv(true)}>
-                  Search Spotify
-                </button>
-                <button
-                  type='button'
-                  onClick={() => updateShowMyPlaylists(true)}
-                >
-                  Search from my playlists
-                </button>
+                {(seedTracksNames[x + 1] ? true : false) && (
+                  <label>{seedTracksNames[x + 1]}</label>
+                )}
+                {(seedTracks[x + 1]
+                  ? seedTracks[x + 1].length > 2
+                    ? false
+                    : true
+                  : true) && (
+                  <>
+                    <button
+                      type='button'
+                      onClick={() => {
+                        updateShowMyPlaylists(false);
+                        updateShowSearchDiv(true);
+                      }}
+                    >
+                      add from Spotify
+                    </button>
+                    <button
+                      type='button'
+                      onClick={() => {
+                        updateShowSearchDiv(false);
+                        updateShowMyPlaylists(true);
+                      }}
+                    >
+                      add from my playlists
+                    </button>
+                  </>
+                )}
                 {showSearchDiv && (
                   <SearchResults
+                    updateShowSearchDiv={updateShowSearchDiv}
                     updateSeedTracks={updateSeedTracks}
+                    updateSeedTracksNames={updateSeedTracksNames}
+                    sectionId={x + 1}
+                  />
+                )}
+                {showMyPlaylists && (
+                  <MyPlaylists
+                    updateShowMyPlaylists={updateShowMyPlaylists}
+                    updateSeedTracks={updateSeedTracks}
+                    updateSeedTracksNames={updateSeedTracksNames}
                     sectionId={x + 1}
                   />
                 )}

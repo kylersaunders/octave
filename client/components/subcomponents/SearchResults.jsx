@@ -1,10 +1,25 @@
 import React, { useState, useEffect, useId } from 'react';
 //import helper functions
-import { playIcon } from '../utils/helperFunctions';
-import { buildWorkout, getLocalSearch } from '../utils/endpointFunctions';
+import { parseResults } from '../../utils/helperFunctions';
+import { getLocalSearch } from '../../utils/endpointFunctions';
+
+// //map state
+// function mapStateToProps(state) {
+//   return {
+//     // workoutSections: state.buildWorkout.value,
+//     // workoutTemplate: state.buildWorkout.template,
+//     // workoutResult: state.buildWorkout.result,
+//     workoutSeeds: state.buildWorkout.seeds,
+//   };
+// }
 
 const SearchResults = (props) => {
-  const { sectionId, updateSeedTracks } = props;
+  const {
+    sectionId,
+    updateShowSearchDiv,
+    updateSeedTracks,
+    updateSeedTracksNames,
+  } = props;
   const [localSearchTerms, updateLocalSearchTerms] = useState('');
   const [localSearchResults, updateLocalSearchResults] = useState([]);
 
@@ -27,10 +42,10 @@ const SearchResults = (props) => {
 
   useEffect(async () => {
     if (localSearchTerms) {
-      const results = await getLocalSearch(localSearchTerms);
+      let results = await getLocalSearch(localSearchTerms);
+      results = parseResults(results);
       updateLocalSearchResults(results);
     }
-    console.log('updating');
   }, [localSearchTerms]);
 
   return (
@@ -84,22 +99,33 @@ const SearchResults = (props) => {
                     <td>{(duration_ms / 1000 / 60).toFixed(2)}</td>
                     <td>TBD</td>
                     <td>
-                      <input
+                      <button
                         id={`${id}`}
-                        name='getRecommendations'
-                        type='submit'
+                        type='button'
                         value='Use as base vibe'
-                        onClick={() =>
+                        onClick={(e) => {
+                          e.preventDefault();
                           updateSeedTracks((prev) => {
                             if (prev[sectionId]) {
-                              prev[sectionId].push(id);
+                              prev[sectionId] += `,${id}`;
                             } else {
-                              prev[sectionId] = [id];
+                              prev[sectionId] = `${id}`;
                             }
                             return prev;
-                          })
-                        }
-                      ></input>
+                          });
+                          updateSeedTracksNames((prev) => {
+                            if (prev[sectionId]) {
+                              prev[
+                                sectionId
+                              ] += `, ${name} by ${artists_names}`;
+                            } else {
+                              prev[sectionId] = `${name} by ${artists_names}`;
+                            }
+                            return prev;
+                          });
+                          updateShowSearchDiv(false);
+                        }}
+                      ></button>
                     </td>
                   </tr>
                 );

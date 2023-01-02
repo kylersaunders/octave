@@ -11,17 +11,6 @@ import CreatePlaylist from './CreatePlaylist.jsx';
 
 //render App
 const App = () => {
-  // //lists to populate components
-  // const [searchResults, updateSearchResults] = useState([]);
-  // const [recommendations, updateRecommendations] = useState([]);
-  // const [playlists, updatePlaylists] = useState([]);
-  // const [pTracks, updatePTracks] = useState([]);
-
-  // //assisting vars
-  // const [playlistOffset, incrementPlaylistOffset] = useState(0);
-  // const [loggedIn, setLoggedIn] = useState('');
-  // const [showNav, setShowNav] = useState(false);
-
   return (
     <>
       <Title />

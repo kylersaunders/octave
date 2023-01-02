@@ -31,13 +31,13 @@ export default (props) => {
             My Saved Workouts
           </Link>
         </li>
-        {/* <li>
+        <li>
           <Link to={'MyPlaylists/'} className={'navLink'}>
-            'My Playlists'
+            My Playlists
           </Link>
-        </li> */}
+        </li>
         <li onClick={login} className={'navLink'}>
-          Refresh Auth
+          Refresh Spotify Link
         </li>
         {/* <li className={'navLink'}>Log out</li> */}
       </ul>

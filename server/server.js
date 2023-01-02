@@ -140,6 +140,13 @@ app.get('/login', async function (req, res) {
 
 app.use('/api', apiRouter);
 
+app.get('/', apiController.checkAuth, (req, res) => {
+  console.log('HOME REQUESTED');
+  return res
+    .status(200)
+    .sendFile(path.resolve(__dirname, '../client/index.html'));
+});
+
 app.use((err, req, res, next) => {
   console.log('ERROR: ', err);
 });
@@ -155,13 +162,6 @@ if (process.env.NODE_ENV === 'production') {
       .sendFile(path.resolve(__dirname, '../client/index.html'));
   });
 }
-
-app.get('/', apiController.checkAuth, (req, res) => {
-  console.log('HOME REQUESTED');
-  return res
-    .status(200)
-    .sendFile(path.resolve(__dirname, '../client/index.html'));
-});
 
 console.log(`Listening on ${port}`);
 app.listen(port);

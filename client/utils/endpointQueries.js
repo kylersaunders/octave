@@ -42,19 +42,19 @@ module.exports = {
   // },
   buildShortRecQueryString: (obj) => {
     const query = {
-      seed_tracks: '11dFghVXANMlKmJXsNCbNl',
-      limit: 50, //1<=100, 20
+      seed_tracks: obj.seed_tracks,
+      limit: 100, //1<=100, 20
       //attributes to filter on
       //  acousticness = document.getElementById('minBPM').value; //0 to 1
       //  danceability = document.getElementById('minBPM').value; //0 to 1
       max_duration_ms: 1000 * 60 * 5, //nothing over five minutes
       //  energy = document.getElementById('minBPM').value; //0 to 1
-      max_instrumentalness: '.35', //filter out tracks likely to be instrumental
+      max_instrumentalness: '.80', //filter out some tracks likely to be instrumental
       //  key = document.getElementById('minBPM').value; //0 to 1
       //  liveness = document.getElementById('minBPM').value; //0 to 1
       //  loudness = document.getElementById('minBPM').value; //0 to 1
       //  mode = document.getElementById('minBPM').value; //0 to 1
-      min_popularity: 25,
+      // min_popularity: 25,
       //  speechiness = document.getElementById('minBPM').value; //0 to 1
       max_tempo: obj.max_tempo * 4,
       min_tempo: obj.min_tempo * 4,
