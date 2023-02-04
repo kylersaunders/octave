@@ -1,5 +1,13 @@
-import React, { useState, useEffect, useId } from 'react';
-//import helper functions
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useId,
+  useRef,
+  useImperativeHandle,
+  useLayoutEffect,
+} from 'react';
+import debounce from 'lodash.debounce';
 import { parseResults } from '../../utils/helperFunctions';
 import { getLocalSearch } from '../../utils/endpointFunctions';
 
@@ -20,46 +28,37 @@ const SearchResults = (props) => {
     updateSeedTracks,
     updateSeedTracksNames,
   } = props;
-  const [localSearchTerms, updateLocalSearchTerms] = useState('');
   const [localSearchResults, updateLocalSearchResults] = useState([]);
+  const searchString = useRef();
+  const debounceSearch = useMemo(() => debounce(search, 900), []);
 
-  async function searchByLetter(e) {
-    if (e.key === 'Meta') return;
-    if (e.key === 'Backspace') {
-      updateLocalSearchTerms((prev) => {
-        let temp = prev.split('');
-        temp.pop();
-        temp = temp.join('');
-        return temp;
-      });
-      return;
-    }
-    updateLocalSearchTerms((prev) => {
-      return (prev += e.key);
-    });
-    console.log(e.key, ' vs ', localSearchTerms);
-  }
+  useEffect(() => {
+    return () => {
+      debouncedChangeHandler.cancel();
+    };
+  }, []);
 
-  useEffect(async () => {
-    if (localSearchTerms) {
-      let results = await getLocalSearch(localSearchTerms);
+  async function search() {
+    if (searchString.current.value) {
+      let results = await getLocalSearch(searchString.current.value);
       results = parseResults(results);
       updateLocalSearchResults(results);
+      searchString.current.value = '';
     }
-  }, [localSearchTerms]);
+  }
 
   return (
     <>
-      <form>
-        <label>Search Spotify</label>
-        <input
-          type='text'
-          id={sectionId}
-          name={`seed`}
-          placeholder='click search'
-          onKeyDown={searchByLetter}
-        ></input>
-      </form>
+      <br />
+      <label>Search Spotify</label>
+      <input
+        type='text'
+        id={sectionId}
+        ref={searchString}
+        name={`seed`}
+        placeholder='click search'
+        onKeyUp={debounceSearch}
+      ></input>
       {(localSearchResults.length ? true : false) && (
         <table>
           <thead>

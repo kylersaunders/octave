@@ -26,11 +26,11 @@ module.exports = {
         exclude: /node_modules/,
         use: ['ts-loader'],
       },
-      {
-        test: /\.js$/,
-        enforce: 'pre',
-        use: ['source-map-loader'],
-      },
+      // {
+      //   test: /\.js$/,
+      //   enforce: 'pre',
+      //   use: ['source-map-loader'],
+      // },
       {
         test: /\.s[ac]ss$/i,
         use: ['style-loader', 'css-loader', 'sass-loader'],
