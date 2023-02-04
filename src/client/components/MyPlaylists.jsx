@@ -4,7 +4,7 @@ import { connect, useSelector, useDispatch } from 'react-redux';
 //   addPlaylistTracks,
 //   updateMyPlaylists,
 // } from '../reducers/buildPlaylistSlice';
-import { getMyPlaylists } from '../utils/endpointFunctions';
+import { getMyPlaylists, deletePlaylist } from '../utils/endpointFunctions';
 
 const MyPlaylists = (props) => {
   const dispatch = useDispatch();
@@ -16,6 +16,7 @@ const MyPlaylists = (props) => {
   } = props;
 
   const [myPlaylists, updateMyPlaylists] = useState([]);
+  const [reload, triggerReload] = useState(false);
 
   useEffect(() => {
     const GMP = async () => {
@@ -23,12 +24,7 @@ const MyPlaylists = (props) => {
       updateMyPlaylists(() => myP);
     };
     GMP();
-  }, []);
-
-  // const playlistOffset = 1;
-  // useEffect(() => {
-  //   dispatch(updateMyPlaylists(getMyPlaylists(playlistOffset)));
-  // }, []);
+  }, [reload]);
 
   return (
     <>
@@ -77,13 +73,29 @@ const MyPlaylists = (props) => {
                 <td>{tracks + ' tracks'}</td>
                 {/* <td>{public_vis}</td> */}
                 <td>
-                  <input
-                    id={`${id}`}
+                  <button
+                    id={`seeTracks${id}`}
                     name='getPlaylistTracks'
-                    type='submit'
-                    value='See tracks'
+                    type='button'
+                    // value='See tracks'
                     // onClick={handleClick}
-                  ></input>
+                  >
+                    See tracks
+                  </button>
+                </td>
+                <td></td>
+                <td>
+                  <button
+                    type='button'
+                    id={`del${id}`}
+                    onClick={() => {
+                      deletePlaylist(id);
+                      // triggerReload(reload ? false : true);
+                      document.getElementById(`del${id}`).remove();
+                    }}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             );

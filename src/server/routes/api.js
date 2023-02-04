@@ -2,10 +2,6 @@ const express = require('express');
 const apiRouter = express.Router();
 const apiController = require('../controllers/apiController');
 
-// apiRouter.get('/checkAuth', apiController.checkAuth, (req, res) => {
-//   res.json(res.locals.access_token).send();
-// });
-
 apiRouter.get(
   '/getProfile',
   apiController.checkAuth,
@@ -92,8 +88,6 @@ apiRouter.post(
   apiController.createPlaylist,
   apiController.postToSpotify,
   (req, res) => {
-    // res.json(res.locals.body)
-    // console.log('Create Playlist', res.locals.body);
     res.json(res.locals.body).send();
   }
 );
@@ -103,6 +97,16 @@ apiRouter.post(
   apiController.checkAuth,
   apiController.addItemsToPlaylist,
   apiController.postToSpotify,
+  (req, res) => {
+    res.json(res.locals.body).send();
+  }
+);
+
+apiRouter.delete(
+  '/deletePlaylist',
+  apiController.checkAuth,
+  apiController.deletePlaylist,
+  apiController.deleteFromSpotify,
   (req, res) => {
     res.json(res.locals.body).send();
   }

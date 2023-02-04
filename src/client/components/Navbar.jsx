@@ -8,6 +8,9 @@ export default (props) => {
   return (
     <div id='navbar'>
       <ul>
+        <li onClick={login} className={'navLink'}>
+          Refresh Spotify Link
+        </li>
         <li>
           <Link to={'BuildWorkout/'} className={'navLink'}>
             Build Workout
@@ -35,9 +38,6 @@ export default (props) => {
           <Link to={'MyPlaylists/'} className={'navLink'}>
             My Playlists
           </Link>
-        </li>
-        <li onClick={login} className={'navLink'}>
-          Refresh Spotify Link
         </li>
         {/* <li className={'navLink'}>Log out</li> */}
       </ul>

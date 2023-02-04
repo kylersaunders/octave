@@ -1,10 +1,10 @@
 const { Pool } = require('pg');
-const pg_uri = require('../clientSecret.js');
+// const pg_uri = require('../clientSecret.js');
 
-const PG_URI = pg_uri.pg_uri;
+// const PG_URI = pg_uri.pg_uri;
 // create a new pool here using the connection string above
 const pool = new Pool({
-  connectionString: PG_URI,
+  connectionString: process.env.PG_URI,
 });
 
 /*

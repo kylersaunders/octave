@@ -13,19 +13,19 @@ import store from './store';
 import styles from './scss/application.scss';
 
 //import main components
-import App from './components/App.jsx';
-import ErrorPage from './components/ErrorPage.jsx';
+import App from './components/App';
+import ErrorPage from './components/ErrorPage';
 
 //import level 1 components
-import BuildWorkout from './components/BuildWorkout.jsx';
-// import SearchSpotify from './components/SearchSpotify.jsx';
-// import GetRecommendations from './components/GetRecommendations.jsx';
-import MyAccount from './components/MyAccount.jsx';
-import MySavedWorkouts from './components/MySavedWorkouts.jsx';
-import MyPlaylists from './components/MyPlaylists.jsx';
+import BuildWorkout from './components/BuildWorkout';
+// import SearchSpotify from './components/SearchSpotify';
+// import GetRecommendations from './components/GetRecommendations';
+import MyAccount from './components/MyAccount';
+import MySavedWorkouts from './components/MySavedWorkouts';
+import MyPlaylists from './components/MyPlaylists';
 
 //import level 2 components
-// import SelectFeeder from './components/subcomponents/SelectFeeder.jsx';
+// import SelectFeeder from './components/subcomponents/SelectFeeder';
 
 //testing new ui background
 document.addEventListener('touchmove', function (e) {

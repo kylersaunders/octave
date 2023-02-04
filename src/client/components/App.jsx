@@ -5,9 +5,9 @@ import { parse } from 'querystring';
 import { Outlet } from 'react-router-dom';
 
 //import App components
-import Title from './Title.jsx';
-import Navbar from './Navbar.jsx';
-import CreatePlaylist from './CreatePlaylist.jsx';
+import Title from './Title';
+import Navbar from './Navbar';
+import CreatePlaylist from './CreatePlaylist';
 
 //render App
 const App = () => {

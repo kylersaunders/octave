@@ -1,5 +1,6 @@
-# custom 
-build/*.js
+docker-compose*.yml
+build/
+
 npm-debug.log
 .DS_Store
 clientSecret.js

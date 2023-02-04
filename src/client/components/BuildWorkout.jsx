@@ -69,7 +69,7 @@ const BuildWorkout = (props) => {
     <>
       {/* <button type='submit' onClick={loadSavedWorkouts}>Load Saved</button>
     <button type='submit' onClick={saveWorkouts}>Save Workout</button> */}
-      <h3>Build Workout:</h3>
+      <h2>Build Workout:</h2>
       <h2>
         <button onClick={() => dispatch(decrement())}>Remove section</button>
         <button onClick={() => dispatch(increment())}>Add section</button>

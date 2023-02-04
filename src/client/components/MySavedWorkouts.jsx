@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 export default (props) => {
   return (
     <>
-      <h1>My Saved Workouts</h1>
+      <h2>My Saved Workouts</h2>
     </>
   );
 };

@@ -11,11 +11,11 @@ const axios = require('axios');
 app.use(cors()).use(cookieParser()).use(express.json());
 
 const apiController = require('./controllers/apiController');
-const db = require('./models/postgresQLmodel');
-const cs = require('./clientSecret');
+// const db = require('./models/postgresQLmodel');
+// const cs = require('./clientSecret');
 const apiRouter = require('./routes/api');
 const { strict } = require('assert');
-const port = 3434;
+// const port = 3434;
 
 const generateRandomString = function (length) {
   let text = '';
@@ -28,17 +28,17 @@ const generateRandomString = function (length) {
   return text;
 };
 
-const client_id = cs.cid; // Your client id
-const client_secret = cs.cs; // Your secret
+const client_id = process.env.CLIENT_ID;
+const client_secret = process.env.CLIENT_SECRET;
 const scope =
   'user-read-private user-modify-private user-read-email user-modify-playback-state playlist-read-collaborative playlist-modify-public playlist-modify-private';
 const stateKey = 'spotify_auth_state';
 let redirect_uri;
 
 if (process.env.NODE_ENV === 'production') {
-  redirect_uri = `http://localhost:${port}/login`;
+  redirect_uri = `http://localhost:${process.env.PORT}/login`;
 } else {
-  redirect_uri = 'http://localhost:8080/login';
+  redirect_uri = `http://localhost:${process.env.DEV_PORT}/login`;
 }
 
 app.get('/login', async function (req, res) {
@@ -140,28 +140,32 @@ app.get('/login', async function (req, res) {
 
 app.use('/api', apiRouter);
 
-app.get('/', apiController.checkAuth, (req, res) => {
-  console.log('HOME REQUESTED');
-  return res
-    .status(200)
-    .sendFile(path.resolve(__dirname, '../client/index.html'));
-});
+if (process.env.NODE_ENV === 'production') {
+  // statically serve everything in the build folder on the route '/build'
+  app.use(
+    '/',
+    apiController.checkAuth,
+    express.static(path.join(__dirname, '../../build'))
+  );
+  // serve index.html on the route '/'
+  // app.get('/', apiController.checkAuth, (req, res) => {
+  //   console.log('HOME REQUESTED');
+  //   return res
+  //     .status(200)
+  //     .sendFile(path.resolve(__dirname, '../../build/index.html'));
+  // });
+} else {
+  app.get('/', apiController.checkAuth, (req, res) => {
+    console.log('HOME REQUESTED');
+    return res
+      .status(200)
+      .sendFile(path.resolve(__dirname, '../../src/client/index.html'));
+  });
+}
 
 app.use((err, req, res, next) => {
   console.log('ERROR: ', err);
 });
 
-if (process.env.NODE_ENV === 'production') {
-  // statically serve everything in the build folder on the route '/build'
-  app.use('/build', express.static(path.join(__dirname, '../build')));
-  // serve index.html on the route '/'
-  app.get('/', apiController.checkAuth, (req, res) => {
-    console.log('HOME REQUESTED');
-    return res
-      .status(200)
-      .sendFile(path.resolve(__dirname, '../client/index.html'));
-  });
-}
-
-console.log(`Listening on ${port}`);
-app.listen(port);
+console.log(`Listening on ${process.env.PORT}`);
+app.listen(process.env.PORT);

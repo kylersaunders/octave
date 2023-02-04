@@ -107,4 +107,7 @@ module.exports = {
         return response;
       });
   },
+  deletePlaylist: async (id) => {
+    fetch(`/api/deletePlaylist?list=${id}`, { method: 'delete' });
+  },
 };
