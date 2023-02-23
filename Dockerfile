@@ -1,5 +1,6 @@
 #add bash to node alpine
 FROM node:16.19-alpine3.16 as alp-base
+RUN apk add --no-cache bash 
 RUN apk add --update 
 
 #build node modules for dev & for building

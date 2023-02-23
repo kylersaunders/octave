@@ -29,38 +29,7 @@ const MyPlaylists = (props) => {
   return (
     <>
       <h2>Your Playlists</h2>
-      {/* <button
-        id='getUsersPlaylists'
-        name='getMyPlaylists'
-        // onClick={handleClick}
-      >
-        Get my playlists
-      </button> */}
-      {/* <input
-        type='number'
-        id='playlistLimit'
-        placeholder='#'
-        min={0}
-        max={50}
-      ></input> */}
-      {/* <form>
-        <input
-          id='newPlaylistName'
-          type='text'
-          placeholder='new playlist name here'
-        ></input>
-        <button name='createPlaylist'>Create new playlist</button>
-      </form> */}
       <table>
-        {/* <thead>
-          <tr>
-            <th></th>
-            <th>Name</th>
-            <th>Tracks</th>
-            <th>Public List</th>
-            <th>See tracks</th>
-          </tr>
-        </thead> */}
         <tbody>
           {myPlaylists.map((x) => {
             const { image_url, id, name, tracks, public_vis } = x;
@@ -71,14 +40,11 @@ const MyPlaylists = (props) => {
                 </td>
                 <td>{name}</td>
                 <td>{tracks + ' tracks'}</td>
-                {/* <td>{public_vis}</td> */}
                 <td>
                   <button
                     id={`seeTracks${id}`}
                     name='getPlaylistTracks'
                     type='button'
-                    // value='See tracks'
-                    // onClick={handleClick}
                   >
                     See tracks
                   </button>

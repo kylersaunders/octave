@@ -1,16 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useMemo } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 
 export default (props) => {
   const login = () => {
     fetch('/login', { mode: 'no-cors', credentials: 'include' });
   };
+
+  useMemo(() => {
+    login();
+  }, []);
+
   return (
     <div id='navbar'>
       <ul>
-        <li onClick={login} className={'navLink'}>
+        {/* <li onClick={login} className={'navLink'}>
           Refresh Spotify Link
-        </li>
+        </li> */}
         <li>
           <Link to={'BuildWorkout/'} className={'navLink'}>
             Build Workout

@@ -1,7 +1,7 @@
 //import libraries
 import React, { useState, useEffect, useRef } from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
-import { addToPlaylist, createPlaylist } from '../utils/endpointFunctions';
+import toast from 'react-hot-toast';
 
 //import functions
 import {
@@ -9,6 +9,7 @@ import {
   advanceTrack,
   delayTrack,
 } from '../reducers/buildWorkoutSlice';
+import { addToPlaylist, createPlaylist } from '../utils/endpointFunctions';
 
 function mapStateToProps(state) {
   return {
@@ -18,6 +19,7 @@ function mapStateToProps(state) {
 
 const CreatePlaylist = (props) => {
   const dispatch = useDispatch();
+  const newPlaylistElement = useRef();
   const { newPlaylist } = props;
 
   let sectionTime = 0;
@@ -32,10 +34,11 @@ const CreatePlaylist = (props) => {
   async function createAndFillPlaylist(e) {
     e.preventDefault();
     const createPlaylistBody = await createPlaylist(
-      document.getElementById('newPlaylistName').value
+      newPlaylistElement.current.value
+      // document.getElementById('newPlaylistName').value
     );
     const playlistId = createPlaylistBody.id;
-    if (newPlaylist.length) {
+    if (newPlaylist?.length) {
       const tracksToAdd = [];
       Object.values(newPlaylist).forEach((x) => {
         x.forEach((y) => {
@@ -44,6 +47,9 @@ const CreatePlaylist = (props) => {
       });
       const response = await addToPlaylist(tracksToAdd, playlistId);
       // console.log(response);
+      toast.success('Playlist created w/selected songs');
+    } else {
+      toast.error('No playlist made - no songs selected');
     }
   }
 
@@ -52,12 +58,14 @@ const CreatePlaylist = (props) => {
       <h3>
         <form onSubmit={createAndFillPlaylist}>
           <input
-            id='newPlaylistName'
+            // id='newPlaylistName'
+            ref={newPlaylistElement}
+            key='newPlaylistElement'
             type='text'
             placeholder='new playlist name'
           />
-          <button type='submit' defaultValue='testlist'>
-            Create playlist w/the tracks below
+          <button type='submit' defaultValue='New Playlist from Octave'>
+            Save this playlist to my Spotify
           </button>
         </form>
       </h3>

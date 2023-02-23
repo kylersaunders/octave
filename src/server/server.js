@@ -138,7 +138,7 @@ app.get('/login', async function (req, res) {
 //   }
 // });
 
-app.use('/api', apiRouter);
+app.use('/api', apiController.checkAuth, apiRouter);
 
 if (process.env.NODE_ENV === 'production') {
   // statically serve everything in the build folder on the route '/build'

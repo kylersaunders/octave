@@ -1,8 +1,8 @@
 //import libraries
 import React, { useState, useEffect } from 'react';
 import { traceDeprecation } from 'process';
-import { parse } from 'querystring';
 import { Outlet } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 
 //import App components
 import Title from './Title';
@@ -13,6 +13,7 @@ import CreatePlaylist from './CreatePlaylist';
 const App = () => {
   return (
     <>
+      <Toaster />
       <Title />
       <Navbar />
       <CreatePlaylist />

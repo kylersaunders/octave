@@ -4,8 +4,8 @@ import { connect, useSelector, useDispatch } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 
 //import components
-import SearchResults from './subcomponents/SearchResults.jsx';
-import MyPlaylists from './MyPlaylists.jsx';
+import SearchResults from './subcomponents/SearchResults';
+import MyPlaylists from './MyPlaylists';
 
 //import functions
 import {
