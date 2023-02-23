@@ -6,9 +6,9 @@
   "scripts": {
     "dev:docker": "nodemon ./src/server/server.js & webpack-dev-server --open --hot",
     "build:docker": "webpack",
-    "dev": "concurrently \"cross-env NODE_ENV=development PROXY_HOST=localhost webpack-dev-server --open \" \"nodemon ./src/server/server.js\"",
-    "build": "cross-env NODE_ENV=production webpack",
-    "start": "cross-env NODE_ENV=production nodemon ./src/server/server.js",
+    "dev": "concurrently \"cross-env NODE_ENV=development PROXY_HOST=localhost REDIRECT_URI_DEV=http://localhost:8080/login webpack-dev-server --open \" \"nodemon ./src/server/server.js\"",
+    "build": "cross-env NODE_ENV=production REDIRECT_URI_PROD=http://localhost:3434/login webpack",
+    "start": "cross-env NODE_ENV=production REDIRECT_URI_PROD=http://localhost:3434/login nodemon ./src/server/server.js",
     "test": "NODE_ENV=test jest --verbose --updateSnapshot --coverage"
   },
   "nodemonConfig": {

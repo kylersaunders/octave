@@ -7,7 +7,12 @@ RUN apk add --update
 FROM alp-base as npm-base
 WORKDIR /usr/src
 COPY package*.json ./
-RUN npm install 
+RUN npm install
+
+#DEVELOPMENT
+#docker build --target octave_dev -t octave_dev .
+FROM npm-base as octave_dev
+EXPOSE 8080 
 
 #webpack builds bundle.js
 FROM npm-base as build

@@ -11,11 +11,8 @@ const axios = require('axios');
 app.use(cors()).use(cookieParser()).use(express.json());
 
 const apiController = require('./controllers/apiController');
-// const db = require('./models/postgresQLmodel');
-// const cs = require('./clientSecret');
 const apiRouter = require('./routes/api');
 const { strict } = require('assert');
-// const port = 3434;
 
 const generateRandomString = function (length) {
   let text = '';
@@ -36,9 +33,9 @@ const stateKey = 'spotify_auth_state';
 let redirect_uri;
 
 if (process.env.NODE_ENV === 'production') {
-  redirect_uri = `http://localhost:${process.env.PORT}/login`;
+  redirect_uri = process.env.REDIRECT_URI_PROD;
 } else {
-  redirect_uri = `http://localhost:${process.env.DEV_PORT}/login`;
+  redirect_uri = process.env.REDIRECT_URI_DEV;
 }
 
 app.get('/login', async function (req, res) {
