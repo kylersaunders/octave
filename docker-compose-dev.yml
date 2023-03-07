@@ -1,0 +1,23 @@
+#DEVELOPMENT
+#docker compose -f docker-compose-dev.yml up
+version: '3'
+volumes:
+  node_modules: {}
+services:
+  octave-dev:
+    image: octave-dev:latest
+    container_name: octave-dev
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/usr/src
+      - node_modules:/usr/src/node_modules
+    env_file:
+      - .env
+    environment:
+      - PROXY_HOST=0.0.0.0
+      - NODE_ENV=development
+      - REDIRECT_URI_DEV=http://localhost:8080/login
+      - DEV_PORT=8080
+      - PORT=3434 #needed for webpack dev server
+    command: 'npm run dev:docker'

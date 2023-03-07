@@ -1,4 +1,3 @@
-docker-compose*.yml
 build/
 
 npm-debug.log

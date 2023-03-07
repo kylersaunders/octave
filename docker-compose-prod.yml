@@ -1,0 +1,16 @@
+# local production -> redirect URI is localhost
+version: '3'
+services:
+  octave-prod:
+    image: octavefitness/octave-prod:latest
+    container_name: octave-prod
+    ports:
+      - 3434:3434
+    environment:
+      - PROXY_HOST=0.0.0.0
+      - NODE_ENV=production
+      - REDIRECT_URI_PROD=http://localhost:3434/login
+      - PORT=3434
+    env_file:
+      - .env
+    command: 'node ./src/server/server.js'

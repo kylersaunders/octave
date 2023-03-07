@@ -1,0 +1,16 @@
+#PRODUCTION -> redirect URI updated for AWS
+version: '3'
+services:
+  octave:
+    image: octavefitness/octave-prod:latest
+    container_name: octavefitness
+    ports:
+      - 3434:3434
+    environment:
+      - PROXY_HOST=0.0.0.0
+      - NODE_ENV=production
+      - REDIRECT_URI_PROD=https://octave.fitness/login
+      - PORT=3434
+    env_file:
+      - .env
+    command: 'node ./src/server/server.js'
