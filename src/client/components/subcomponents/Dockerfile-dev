@@ -1,0 +1,15 @@
+#add bash to node alpine
+FROM node:16.19-alpine3.16 as alp-base
+RUN apk add --no-cache bash 
+RUN apk add --update 
+
+#build node modules for dev & for building
+FROM alp-base as npm-base
+WORKDIR /usr/src
+COPY package*.json ./
+RUN npm install
+
+#DEVELOPMENT
+#docker build --target octave-dev -t octave-dev .
+FROM npm-base as octave-dev
+EXPOSE 8080  

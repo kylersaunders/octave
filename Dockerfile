@@ -9,6 +9,11 @@ WORKDIR /usr/src
 COPY package*.json ./
 RUN npm install 
 
+#DEVELOPMENT
+#docker build --target octave-dev -t octave-dev .
+FROM npm-base as octave-dev
+EXPOSE 8080  
+
 #webpack builds bundle.js
 FROM npm-base as build
 WORKDIR /usr/src   
@@ -27,4 +32,4 @@ COPY --from=build /usr/src/build ./build
 EXPOSE 3434
 ENTRYPOINT node ./src/server/server.js 
 
-# docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t dockwellhub/dwh-prod:latest --push . 
+# docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t octavefitness/octave-prod:latest --push . 
